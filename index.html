@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DONMYEONG & DOHUI Wedding Invitation</title>
+  <style>
+    :root {
+      --bg: #fbf8f4;
+      --card: #ffffff;
+      --text: #2c2926;
+      --muted: #8b8178;
+      --gold: #b89a62;
+      --line: #e9dfd3;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .page {
+      max-width: 430px;
+      margin: 0 auto;
+      background: var(--bg);
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    section {
+      padding: 72px 24px;
+      text-align: center;
+    }
+
+    .cover {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 48px 24px;
+      background:
+        linear-gradient(rgba(20, 18, 16, 0.18), rgba(20, 18, 16, 0.42)),
+        url("images/cover.jpg");
+      background-size: cover;
+      background-position: center;
+      color: white;
+      position: relative;
+    }
+
+    .cover.no-image {
+      background:
+        linear-gradient(160deg, #1f1c19 0%, #4b4237 55%, #b89a62 140%);
+    }
+
+    .cover .label {
+      font-size: 13px;
+      letter-spacing: 0.28em;
+      color: rgba(255,255,255,0.78);
+      margin-bottom: 36px;
+    }
+
+    .cover h1 {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 34px;
+      line-height: 1.25;
+      letter-spacing: 0.06em;
+      margin: 0;
+      font-weight: 400;
+    }
+
+    .cover .date {
+      margin-top: 32px;
+      font-size: 15px;
+      letter-spacing: 0.12em;
+    }
+
+    .cover .venue {
+      margin-top: 8px;
+      font-size: 15px;
+      color: rgba(255,255,255,0.88);
+    }
+
+    .scroll {
+      position: absolute;
+      bottom: 28px;
+      left: 0;
+      right: 0;
+      font-size: 12px;
+      letter-spacing: 0.22em;
+      color: rgba(255,255,255,0.72);
+    }
+
+    .section-title {
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--gold);
+      letter-spacing: 0.12em;
+      font-size: 15px;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+
+    .k-title {
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 28px;
+    }
+
+    .invitation p {
+      margin: 0 0 12px;
+      font-size: 16px;
+      color: #423c36;
+    }
+
+    .info-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 28px 22px;
+      box-shadow: 0 12px 30px rgba(70, 55, 37, 0.06);
+    }
+
+    .info-card .big-date {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 24px;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      border-top: 1px solid var(--line);
+      padding: 13px 0;
+      font-size: 15px;
+      text-align: left;
+    }
+
+    .info-row span:first-child {
+      color: var(--muted);
+      min-width: 54px;
+    }
+
+    .info-row span:last-child {
+      text-align: right;
+    }
+
+    .button {
+      display: block;
+      width: 100%;
+      border: 1px solid var(--gold);
+      color: var(--text);
+      background: transparent;
+      padding: 13px 14px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 14px;
+      margin-top: 14px;
+      cursor: pointer;
+    }
+
+    .button.primary {
+      background: var(--gold);
+      color: white;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .photo-placeholder {
+      aspect-ratio: 1 / 1;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #ede2d5, #cbb895);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 12px;
+    }
+
+    .map-box {
+      height: 220px;
+      border-radius: 20px;
+      background: #e8ded3;
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      margin-bottom: 18px;
+      padding: 20px;
+    }
+
+    .address {
+      font-size: 15px;
+      margin-bottom: 14px;
+    }
+
+    .button-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .notice {
+      margin-top: 22px;
+      text-align: left;
+      background: rgba(255,255,255,0.6);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      font-size: 14px;
+      color: #4b453e;
+    }
+
+    .account {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    .account strong {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .account .number {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .copy-btn {
+      width: 100%;
+      border: 0;
+      background: #f1e8dc;
+      color: var(--text);
+      border-radius: 12px;
+      padding: 11px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    form {
+      text-align: left;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      margin: 16px 0 6px;
+      color: #4c443c;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 13px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      font-size: 15px;
+      background: #fff;
+    }
+
+    .submit {
+      width: 100%;
+      margin-top: 20px;
+      border: 0;
+      background: var(--gold);
+      color: white;
+      padding: 14px;
+      border-radius: 999px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .footer {
+      padding-bottom: 44px;
+      color: var(--muted);
+    }
+
+    .footer .names {
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      margin-top: 18px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(35,31,28,0.88);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      z-index: 20;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <section class="cover no-image">
+      <div class="label">WEDDING INVITATION</div>
+      <h1>DONMYEONG<br />&amp;<br />DOHUI</h1>
+      <div class="date">2027. 10. 23 SAT</div>
+      <div class="venue">광명무역센터컨벤션</div>
+      <div class="scroll">SCROLL</div>
+    </section>
+
+    <section class="invitation">
+      <div class="section-title">Invitation</div>
+      <div class="k-title">초대합니다</div>
+      <p>서로 다른 길을 걸어온 두 사람이</p>
+      <p>이제 같은 방향을 바라보며</p>
+      <p>평생을 함께하고자 합니다.</p>
+      <br />
+      <p>소중한 걸음으로 함께해 주시면</p>
+      <p>더없는 기쁨으로 간직하겠습니다.</p>
+    </section>
+
+    <section>
+      <div class="section-title">Wedding Day</div>
+      <div class="info-card">
+        <div class="big-date">2027. 10. 23</div>
+        <div>토요일 오후 12시 10분</div>
+
+        <div style="height:18px"></div>
+
+        <div class="info-row">
+          <span>날짜</span>
+          <span>2027년 10월 23일 토요일</span>
+        </div>
+        <div class="info-row">
+          <span>시간</span>
+          <span>오후 12시 10분</span>
+        </div>
+        <div class="info-row">
+          <span>장소</span>
+          <span>광명무역센터컨벤션</span>
+        </div>
+        <div class="info-row">
+          <span>주소</span>
+          <span>경기 광명시 일직로 72</span>
+        </div>
+
+        <a class="button primary" href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20271023T121000%0ADTEND:20271023T141000%0ASUMMARY:DONMYEONG%20%26%20DOHUI%20Wedding%0ALOCATION:%EA%B2%BD%EA%B8%B0%20%EA%B4%91%EB%AA%85%EC%8B%9C%20%EC%9D%BC%EC%A7%81%EB%A1%9C%2072%0AEND:VEVENT%0AEND:VCALENDAR" download="wedding.ics">캘린더에 추가하기</a>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">Gallery</div>
+      <div class="k-title">우리의 순간</div>
+      <div class="gallery-grid">
+        <div class="photo-placeholder">PHOTO</div>
+        <div class="photo-placeholder">PHOTO</div>
+        <div class="photo-placeholder">PHOTO</div>
+        <div class="photo-placeholder">PHOTO</div>
+        <div class="photo-placeholder">PHOTO</div>
+        <div class="photo-placeholder">PHOTO</div>
+        <div class="photo-placeholder">PHOTO</div>
+        <div class="photo-placeholder">PHOTO</div>
+        <div class="photo-placeholder">PHOTO</div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">Location</div>
+      <div class="k-title">오시는 길</div>
+      <div class="map-box">
+        지도 영역<br />
+        실제 배포 전 카카오맵 또는 네이버지도 iframe 삽입 예정
+      </div>
+      <div class="address">경기 광명시 일직로 72<br />광명무역센터컨벤션</div>
+
+      <div class="button-row">
+        <a class="button" href="https://map.naver.com/p/search/경기%20광명시%20일직로%2072" target="_blank">네이버지도 열기</a>
+        <a class="button" href="https://map.kakao.com/link/search/경기%20광명시%20일직로%2072" target="_blank">카카오맵 열기</a>
+        <a class="button" href="https://apis.openapi.sk.com/tmap/app/routes?name=광명무역센터컨벤션&lon=&lat=" target="_blank">티맵 열기</a>
+      </div>
+
+      <div class="notice">
+        <strong>주차 안내</strong><br />
+        주차 안내 문구는 예식장 최종 안내 확인 후 입력 예정입니다.
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">Account</div>
+      <div class="k-title">마음 전하실 곳</div>
+
+      <div class="account">
+        <strong>신랑 측</strong>
+        <div class="number">신한은행 110-281-575476</div>
+        <button class="copy-btn" onclick="copyText('신한은행 110-281-575476')">계좌번호 복사</button>
+      </div>
+
+      <div class="account">
+        <strong>신부 측</strong>
+        <div class="number">카카오뱅크 3333-15-321321</div>
+        <button class="copy-btn" onclick="copyText('카카오뱅크 3333-15-321321')">계좌번호 복사</button>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">RSVP</div>
+      <div class="k-title">참석 여부 전달</div>
+      <form onsubmit="submitRSVP(event)">
+        <label for="attend">참석 여부</label>
+        <select id="attend" required>
+          <option value="">선택해주세요</option>
+          <option value="참석">참석</option>
+          <option value="불참">불참</option>
+          <option value="미정">미정</option>
+        </select>
+
+        <label for="name">이름</label>
+        <input id="name" type="text" placeholder="성함을 입력해주세요" required />
+
+        <label for="count">동행 인원</label>
+        <select id="count" required>
+          <option value="1">1명</option>
+          <option value="2">2명</option>
+          <option value="3">3명</option>
+          <option value="4">4명 이상</option>
+        </select>
+
+        <button class="submit" type="submit">제출하기</button>
+      </form>
+    </section>
+
+    <section class="footer">
+      <p>끝까지 읽어주셔서 감사합니다.</p>
+      <p>2027. 10. 23</p>
+      <div class="names">DONMYEONG &amp; DOHUI</div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast">복사되었습니다</div>
+
+  <script>
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 1600);
+    }
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text)
+        .then(() => showToast("복사되었습니다"))
+        .catch(() => showToast("복사에 실패했습니다"));
+    }
+
+    function submitRSVP(event) {
+      event.preventDefault();
+      const attend = document.getElementById("attend").value;
+      const name = document.getElementById("name").value;
+      const count = document.getElementById("count").value;
+
+      // 현재는 테스트용입니다.
+      // 실제 저장은 나중에 Google Forms 또는 Google Sheets와 연결합니다.
+      showToast("제출되었습니다");
+      console.log({ attend, name, count });
+      event.target.reset();
+    }
+  </script>
+</body>
+</html>
