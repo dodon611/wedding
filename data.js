@@ -56,7 +56,9 @@ const WEDDING_DATA = {
   gallery: [],
 
   music: {
-    enabled: false,
-    file: "music/bgm.mp3"
+    enabled: true,
+    file: "music/bgm.mp3",
+    volume: 0.75,
+    fadeInMs: 1200
   }
 };

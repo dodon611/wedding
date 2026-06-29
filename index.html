@@ -16,16 +16,44 @@
 </head>
 
 <body>
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <button class="music-button" id="musicButton" type="button" aria-label="배경음악 재생">
+    <span class="music-icon">♪</span>
+    <span id="musicLabel">OFF</span>
+  </button>
+
+  <audio id="bgm" preload="auto" loop></audio>
+
   <main class="page">
     <section class="cover">
-      <div class="cover-inner">
+      <div class="cover-shade"></div>
+
+      <div class="cover-top">
         <div class="cover-label">WEDDING INVITATION</div>
-        <h1><span data-text="groom.en">DONMYEONG</span><br /><span class="amp">&amp;</span><br /><span data-text="bride.en">DOHUI</span></h1>
-        <p class="cover-korean"><span data-text="groom.ko">돈명</span> · <span data-text="bride.ko">도희</span></p>
+      </div>
+
+      <div class="cover-inner">
+        <h1>
+          <span data-text="groom.en">DONMYEONG</span>
+          <span class="amp">&amp;</span>
+          <span data-text="bride.en">DOHUI</span>
+        </h1>
+
+        <p class="cover-korean">
+          <span data-text="groom.ko">돈명</span> · <span data-text="bride.ko">도희</span>
+        </p>
+
+        <div class="cover-divider"></div>
+
         <p class="cover-date" data-text="display.coverDate">2027. 10. 23 SAT</p>
         <p class="cover-venue" data-text="venue.name">광명무역센터컨벤션</p>
       </div>
-      <div class="scroll">SCROLL</div>
+
+      <div class="scroll">
+        <span>SCROLL</span>
+        <i></i>
+      </div>
     </section>
 
     <section class="invitation reveal">

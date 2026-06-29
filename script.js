@@ -1,6 +1,10 @@
 const DATA = WEDDING_DATA;
 const WEDDING_DATE = new Date(DATA.wedding.dateTime);
 
+let bgmAudio = null;
+let isMusicPlaying = false;
+let fadeTimer = null;
+
 function getValueByPath(object, path) {
   return path.split(".").reduce((value, key) => value?.[key], object);
 }
@@ -138,6 +142,100 @@ function initRevealAnimation() {
   targets.forEach((target) => observer.observe(target));
 }
 
+function initScrollProgress() {
+  const progress = document.getElementById("scrollProgress");
+  if (!progress) return;
+
+  const update = () => {
+    const scrollTop = window.scrollY;
+    const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const percentage = documentHeight > 0 ? (scrollTop / documentHeight) * 100 : 0;
+    progress.style.width = `${Math.min(100, Math.max(0, percentage))}%`;
+  };
+
+  window.addEventListener("scroll", update, { passive: true });
+  update();
+}
+
+function setMusicUi(playing) {
+  const button = document.getElementById("musicButton");
+  const label = document.getElementById("musicLabel");
+  if (!button || !label) return;
+
+  button.classList.toggle("is-playing", playing);
+  label.textContent = playing ? "ON" : "OFF";
+  button.setAttribute("aria-label", playing ? "배경음악 끄기" : "배경음악 켜기");
+}
+
+function fadeInAudio(audio, targetVolume, duration) {
+  clearInterval(fadeTimer);
+  audio.volume = 0;
+
+  const steps = 20;
+  const interval = duration / steps;
+  let currentStep = 0;
+
+  fadeTimer = setInterval(() => {
+    currentStep += 1;
+    audio.volume = Math.min(targetVolume, (targetVolume / steps) * currentStep);
+
+    if (currentStep >= steps) {
+      clearInterval(fadeTimer);
+      audio.volume = targetVolume;
+    }
+  }, interval);
+}
+
+async function playMusic() {
+  if (!DATA.music.enabled) {
+    showToast("배경음악 준비 중입니다");
+    return;
+  }
+
+  if (!bgmAudio) {
+    bgmAudio = document.getElementById("bgm");
+    bgmAudio.src = DATA.music.file;
+    bgmAudio.loop = true;
+  }
+
+  try {
+    await bgmAudio.play();
+    isMusicPlaying = true;
+    localStorage.setItem("weddingMusic", "on");
+    setMusicUi(true);
+    fadeInAudio(bgmAudio, DATA.music.volume ?? 0.75, DATA.music.fadeInMs ?? 1000);
+  } catch (error) {
+    showToast("음악 파일을 확인해주세요");
+    console.error(error);
+  }
+}
+
+function stopMusic() {
+  if (!bgmAudio) return;
+
+  clearInterval(fadeTimer);
+  bgmAudio.pause();
+  bgmAudio.currentTime = 0;
+  isMusicPlaying = false;
+  localStorage.setItem("weddingMusic", "off");
+  setMusicUi(false);
+}
+
+function initMusic() {
+  const button = document.getElementById("musicButton");
+  if (!button) return;
+
+  setMusicUi(false);
+
+  button.addEventListener("click", () => {
+    if (isMusicPlaying) {
+      stopMusic();
+    } else {
+      playMusic();
+    }
+  });
+}
+
 document.getElementById("copyAddressButton")?.addEventListener("click", () => {
   copyText(DATA.venue.address);
 });
@@ -149,3 +247,5 @@ renderMapButtons();
 renderAccounts();
 updateDday();
 initRevealAnimation();
+initScrollProgress();
+initMusic();
