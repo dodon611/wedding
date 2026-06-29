@@ -31,14 +31,7 @@
     <section class="invitation reveal">
       <p class="section-title">Invitation</p>
       <h2>초대합니다</h2>
-      <div id="invitationText">
-        <p>서로 다른 길을 걸어온 두 사람이</p>
-        <p>이제 같은 방향을 바라보며</p>
-        <p>평생을 함께하고자 합니다.</p>
-        <br />
-        <p>소중한 걸음으로 함께해 주시면</p>
-        <p>더없는 기쁨으로 간직하겠습니다.</p>
-      </div>
+      <div id="invitationText"></div>
     </section>
 
     <section class="reveal">
@@ -81,29 +74,29 @@
       <p class="section-title">Location</p>
       <h2>오시는 길</h2>
 
-      <div class="location-map">
-        <strong data-text="venue.name">광명무역센터컨벤션</strong>
-        <span data-text="venue.address">경기 광명시 일직로 72</span>
-        <em data-text="venue.floor">3층</em>
+      <div class="map-preview" aria-label="지도 영역">
+        <div class="map-pin">⌖</div>
+        <div class="map-word">MAP</div>
+        <div class="map-line"></div>
       </div>
 
-      <div class="location-card">
-        <h3 data-text="venue.name">광명무역센터컨벤션</h3>
-        <p data-text="venue.address">경기 광명시 일직로 72</p>
-        <p class="floor" data-text="venue.floor">3층</p>
-        <button class="button" id="copyAddressButton">주소 복사하기</button>
+      <div class="location-summary">
+        <p class="location-name" data-text="venue.name">광명무역센터컨벤션</p>
+        <p class="location-address" data-text="venue.address">경기 광명시 일직로 72</p>
+        <p class="location-floor">예식장 <span data-text="venue.floor">3층</span></p>
+        <button class="button subtle" id="copyAddressButton">주소 복사하기</button>
       </div>
 
       <div class="map-buttons" id="mapButtons"></div>
 
-      <div class="notice">
+      <div class="notice compact">
         <strong>주차 안내</strong>
         <div id="parkingNotice"></div>
       </div>
 
-      <div class="notice">
+      <div class="notice compact">
         <strong>예식장 안내</strong>
-        <p>예식장은 건물 <span data-text="venue.floor">3층</span>입니다. 도착 후 <span data-text="venue.floor">3층</span> 광명무역센터컨벤션으로 이동해 주세요.</p>
+        <p>도착 후 <span data-text="venue.floor">3층</span> 광명무역센터컨벤션으로 이동해 주세요.</p>
       </div>
     </section>
 

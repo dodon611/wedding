@@ -498,3 +498,121 @@ select:focus {
   .cover-inner, .scroll, .reveal { animation: none; transition: none; }
   .reveal { opacity: 1; transform: none; }
 }
+
+
+/* V5 Location redesign */
+.map-preview {
+  height: 168px;
+  position: relative;
+  border-radius: 24px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.18) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,0.18) 1px, transparent 1px),
+    linear-gradient(135deg, #eee3d5, #d6c4a6);
+  background-size: 32px 32px, 32px 32px, 100% 100%;
+  box-shadow: 0 14px 34px rgba(70, 55, 37, 0.07);
+}
+
+.map-preview::before,
+.map-preview::after {
+  content: "";
+  position: absolute;
+  background: rgba(184, 154, 98, 0.38);
+  border-radius: 999px;
+}
+
+.map-preview::before {
+  width: 180px;
+  height: 1px;
+  left: -24px;
+  top: 62%;
+  transform: rotate(-16deg);
+}
+
+.map-preview::after {
+  width: 160px;
+  height: 1px;
+  right: -28px;
+  top: 38%;
+  transform: rotate(22deg);
+}
+
+.map-pin {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  transform: translate(-50%, -50%);
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.84);
+  border: 1px solid rgba(184,154,98,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-dark);
+  font-size: 24px;
+  box-shadow: 0 10px 28px rgba(70,55,37,0.12);
+  z-index: 1;
+}
+
+.map-word {
+  position: absolute;
+  left: 18px;
+  top: 16px;
+  font-family: Georgia, "Times New Roman", serif;
+  color: rgba(106, 90, 68, 0.52);
+  font-size: 13px;
+  letter-spacing: 0.24em;
+}
+
+.map-line {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  height: 1px;
+  background: rgba(184,154,98,0.3);
+}
+
+.location-summary {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.location-name {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 21px;
+  color: var(--gold);
+}
+
+.location-address {
+  margin: 8px 0 0;
+  font-size: 15px;
+  color: #4b453e;
+}
+
+.location-floor {
+  margin: 4px 0 16px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.button.subtle {
+  background: rgba(255,255,255,0.48);
+  border-color: var(--line);
+  color: #5a5148;
+}
+
+.notice.compact {
+  padding: 16px;
+  margin-top: 12px;
+}
+
+.notice.compact p {
+  line-height: 1.65;
+}
