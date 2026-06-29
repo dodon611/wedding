@@ -1,4 +1,74 @@
-const WEDDING_DATE = new Date("2027-10-23T12:10:00+09:00");
+const DATA = WEDDING_DATA;
+const WEDDING_DATE = new Date(DATA.wedding.dateTime);
+
+function getValueByPath(object, path) {
+  return path.split(".").reduce((value, key) => value?.[key], object);
+}
+
+function applyTextData() {
+  document.querySelectorAll("[data-text]").forEach((element) => {
+    const value = getValueByPath(DATA, element.dataset.text);
+    if (value !== undefined && value !== null) {
+      element.textContent = value;
+    }
+  });
+}
+
+function renderInvitation() {
+  const target = document.getElementById("invitationText");
+  if (!target) return;
+
+  target.innerHTML = DATA.invitation
+    .map((line) => line === "" ? "<br />" : `<p>${line}</p>`)
+    .join("");
+}
+
+function renderParkingNotice() {
+  const target = document.getElementById("parkingNotice");
+  if (!target) return;
+
+  target.innerHTML = DATA.venue.parking
+    .map((line) => `<p>${line}</p>`)
+    .join("");
+}
+
+function renderMapButtons() {
+  const target = document.getElementById("mapButtons");
+  if (!target) return;
+
+  const buttons = [
+    { label: "카카오맵으로 보기", url: DATA.links.kakaoMap, primary: true },
+    { label: "네이버지도에서 보기", url: DATA.links.naverMap },
+    { label: "티맵에서 보기", url: DATA.links.tmap }
+  ];
+
+  target.innerHTML = buttons
+    .filter((button) => button.url)
+    .map((button) => `
+      <a class="button ${button.primary ? "primary" : ""}" href="${button.url}" target="_blank" rel="noopener">
+        ${button.label}
+      </a>
+    `)
+    .join("");
+}
+
+function renderAccounts() {
+  const target = document.getElementById("accountList");
+  if (!target) return;
+
+  const accounts = [DATA.groom, DATA.bride];
+
+  target.innerHTML = accounts.map((person) => {
+    const accountText = `${person.bank} ${person.accountNumber}`;
+    return `
+      <details class="account">
+        <summary>${person.accountLabel} 계좌 보기</summary>
+        <p>${accountText}</p>
+        <button class="copy-btn" type="button" onclick="copyText('${accountText}')">계좌번호 복사</button>
+      </details>
+    `;
+  }).join("");
+}
 
 function updateDday() {
   const ddayElement = document.getElementById("dday");
@@ -39,8 +109,6 @@ function submitRSVP(event) {
   const name = document.getElementById("name").value;
   const count = document.getElementById("count").value;
 
-  // 현재는 테스트용입니다.
-  // 다음 단계에서 Google Forms 또는 Google Sheets와 연결합니다.
   console.log({ attend, name, count });
 
   showToast("제출되었습니다");
@@ -70,5 +138,14 @@ function initRevealAnimation() {
   targets.forEach((target) => observer.observe(target));
 }
 
+document.getElementById("copyAddressButton")?.addEventListener("click", () => {
+  copyText(DATA.venue.address);
+});
+
+applyTextData();
+renderInvitation();
+renderParkingNotice();
+renderMapButtons();
+renderAccounts();
 updateDday();
 initRevealAnimation();

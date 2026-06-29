@@ -1,4 +1,4 @@
- :root {
+:root {
   --bg: #fbf8f4;
   --card: #ffffff;
   --text: #2c2926;
@@ -87,13 +87,20 @@ section {
   font-weight: 400;
 }
 
-.cover h1 span {
+.cover h1 .amp {
   font-size: 25px;
   color: rgba(255,255,255,0.85);
 }
 
+.cover-korean {
+  margin: 22px 0 0;
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  color: rgba(255,255,255,0.78);
+}
+
 .cover-date {
-  margin: 32px 0 0;
+  margin: 24px 0 0;
   font-size: 15px;
   letter-spacing: 0.12em;
 }
@@ -253,10 +260,6 @@ form {
   box-shadow: 0 10px 22px rgba(184,154,98,0.22);
 }
 
-.button.primary:active {
-  background: var(--gold-dark);
-}
-
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -278,7 +281,7 @@ form {
 }
 
 .location-map {
-  height: 220px;
+  height: 170px;
   border-radius: 22px;
   background:
     radial-gradient(circle at top left, rgba(255,255,255,0.55), transparent 40%),
@@ -481,39 +484,17 @@ select:focus {
 }
 
 @keyframes coverFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes scrollPulse {
-  0%, 100% {
-    opacity: 0.45;
-    transform: translateY(0);
-  }
-  50% {
-    opacity: 0.9;
-    transform: translateY(5px);
-  }
+  0%, 100% { opacity: 0.45; transform: translateY(0); }
+  50% { opacity: 0.9; transform: translateY(5px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  .cover-inner,
-  .scroll,
-  .reveal {
-    animation: none;
-    transition: none;
-  }
-  .reveal {
-    opacity: 1;
-    transform: none;
-  }
+  html { scroll-behavior: auto; }
+  .cover-inner, .scroll, .reveal { animation: none; transition: none; }
+  .reveal { opacity: 1; transform: none; }
 }

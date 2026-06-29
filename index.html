@@ -20,9 +20,10 @@
     <section class="cover">
       <div class="cover-inner">
         <div class="cover-label">WEDDING INVITATION</div>
-        <h1>DONMYEONG<br /><span>&amp;</span><br />DOHUI</h1>
-        <p class="cover-date">2027. 10. 23 SAT</p>
-        <p class="cover-venue">광명무역센터컨벤션</p>
+        <h1><span data-text="groom.en">DONMYEONG</span><br /><span class="amp">&amp;</span><br /><span data-text="bride.en">DOHUI</span></h1>
+        <p class="cover-korean"><span data-text="groom.ko">돈명</span> · <span data-text="bride.ko">도희</span></p>
+        <p class="cover-date" data-text="display.coverDate">2027. 10. 23 SAT</p>
+        <p class="cover-venue" data-text="venue.name">광명무역센터컨벤션</p>
       </div>
       <div class="scroll">SCROLL</div>
     </section>
@@ -30,27 +31,29 @@
     <section class="invitation reveal">
       <p class="section-title">Invitation</p>
       <h2>초대합니다</h2>
-      <p>서로 다른 길을 걸어온 두 사람이</p>
-      <p>이제 같은 방향을 바라보며</p>
-      <p>평생을 함께하고자 합니다.</p>
-      <br />
-      <p>소중한 걸음으로 함께해 주시면</p>
-      <p>더없는 기쁨으로 간직하겠습니다.</p>
+      <div id="invitationText">
+        <p>서로 다른 길을 걸어온 두 사람이</p>
+        <p>이제 같은 방향을 바라보며</p>
+        <p>평생을 함께하고자 합니다.</p>
+        <br />
+        <p>소중한 걸음으로 함께해 주시면</p>
+        <p>더없는 기쁨으로 간직하겠습니다.</p>
+      </div>
     </section>
 
     <section class="reveal">
       <p class="section-title">Wedding Day</p>
       <div class="info-card">
         <p class="dday" id="dday">D-Day</p>
-        <p class="big-date">2027. 10. 23</p>
-        <p class="sub-text">토요일 오후 12시 10분</p>
+        <p class="big-date" data-text="display.date">2027. 10. 23</p>
+        <p class="sub-text" data-text="display.time">토요일 오후 12시 10분</p>
 
         <div class="divider"></div>
 
-        <div class="info-row"><span>날짜</span><strong>2027년 10월 23일 토요일</strong></div>
-        <div class="info-row"><span>시간</span><strong>오후 12시 10분</strong></div>
-        <div class="info-row"><span>장소</span><strong>광명무역센터컨벤션</strong></div>
-        <div class="info-row"><span>주소</span><strong>경기 광명시 일직로 72</strong></div>
+        <div class="info-row"><span>날짜</span><strong data-text="display.fullDate">2027년 10월 23일 토요일</strong></div>
+        <div class="info-row"><span>시간</span><strong data-text="display.time">오후 12시 10분</strong></div>
+        <div class="info-row"><span>장소</span><strong data-text="venue.name">광명무역센터컨벤션</strong></div>
+        <div class="info-row"><span>주소</span><strong data-text="venue.address">경기 광명시 일직로 72</strong></div>
 
         <a class="button primary" href="wedding.ics" download>캘린더에 추가하기</a>
       </div>
@@ -61,7 +64,7 @@
       <h2>우리의 순간</h2>
       <p class="guide-text">사진은 나중에 추가 예정입니다.</p>
 
-      <div class="gallery-grid">
+      <div class="gallery-grid" id="galleryGrid">
         <button class="photo-placeholder">PHOTO</button>
         <button class="photo-placeholder">PHOTO</button>
         <button class="photo-placeholder">PHOTO</button>
@@ -79,51 +82,35 @@
       <h2>오시는 길</h2>
 
       <div class="location-map">
-        <strong>광명무역센터컨벤션</strong>
-        <span>경기 광명시 일직로 72</span>
-        <em>3층</em>
+        <strong data-text="venue.name">광명무역센터컨벤션</strong>
+        <span data-text="venue.address">경기 광명시 일직로 72</span>
+        <em data-text="venue.floor">3층</em>
       </div>
 
       <div class="location-card">
-        <h3>광명무역센터컨벤션</h3>
-        <p>경기 광명시 일직로 72</p>
-        <p class="floor">3층</p>
-        <button class="button" onclick="copyText('경기 광명시 일직로 72')">주소 복사하기</button>
+        <h3 data-text="venue.name">광명무역센터컨벤션</h3>
+        <p data-text="venue.address">경기 광명시 일직로 72</p>
+        <p class="floor" data-text="venue.floor">3층</p>
+        <button class="button" id="copyAddressButton">주소 복사하기</button>
       </div>
 
-      <div class="map-buttons">
-        <a class="button primary" href="https://kko.kakao.com/UFSKCJ7fGI" target="_blank" rel="noopener">카카오맵으로 보기</a>
-        <a class="button" href="https://map.naver.com/p/search/경기%20광명시%20일직로%2072" target="_blank" rel="noopener">네이버지도에서 보기</a>
-        <a class="button" href="https://www.tmap.co.kr/search?searchKeyword=경기%20광명시%20일직로%2072" target="_blank" rel="noopener">티맵에서 보기</a>
-      </div>
+      <div class="map-buttons" id="mapButtons"></div>
 
       <div class="notice">
         <strong>주차 안내</strong>
-        <p>주차 안내 문구는 예식장 최종 안내 확인 후 입력 예정입니다.</p>
-        <p>무료 주차 시간, 주차 등록 여부 확인 후 반영 예정입니다.</p>
+        <div id="parkingNotice"></div>
       </div>
 
       <div class="notice">
         <strong>예식장 안내</strong>
-        <p>예식장은 건물 3층입니다. 도착 후 3층 광명무역센터컨벤션으로 이동해 주세요.</p>
+        <p>예식장은 건물 <span data-text="venue.floor">3층</span>입니다. 도착 후 <span data-text="venue.floor">3층</span> 광명무역센터컨벤션으로 이동해 주세요.</p>
       </div>
     </section>
 
     <section class="reveal">
       <p class="section-title">Account</p>
       <h2>마음 전하실 곳</h2>
-
-      <details class="account">
-        <summary>신랑 측 계좌 보기</summary>
-        <p>신한은행 110-281-575476</p>
-        <button class="copy-btn" onclick="copyText('신한은행 110-281-575476')">계좌번호 복사</button>
-      </details>
-
-      <details class="account">
-        <summary>신부 측 계좌 보기</summary>
-        <p>카카오뱅크 3333-15-321321</p>
-        <button class="copy-btn" onclick="copyText('카카오뱅크 3333-15-321321')">계좌번호 복사</button>
-      </details>
+      <div id="accountList"></div>
     </section>
 
     <section class="reveal">
@@ -157,12 +144,14 @@
 
     <section class="footer reveal">
       <p>끝까지 읽어주셔서 감사합니다.</p>
-      <p>2027. 10. 23</p>
-      <p class="footer-names">DONMYEONG &amp; DOHUI</p>
+      <p data-text="display.date">2027. 10. 23</p>
+      <p class="footer-names"><span data-text="groom.en">DONMYEONG</span> &amp; <span data-text="bride.en">DOHUI</span></p>
     </section>
   </main>
 
   <div id="toast" class="toast">복사되었습니다</div>
+
+  <script src="data.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
