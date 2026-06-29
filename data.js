@@ -44,6 +44,11 @@ const WEDDING_DATA = {
     tmap: "https://www.tmap.co.kr/search?searchKeyword=경기%20광명시%20일직로%2072"
   },
 
+  rsvp: {
+    enabled: true,
+    endpoint: "https://script.google.com/macros/s/AKfycbxzK-odr7JPJ-DJIoXfESVTxbUuOeniQuG7BQhJn6UEVUABULKNbWoZqDB4TK3aArcbBQ/exec"
+  },
+
   invitation: [
     "서로 다른 길을 걸어온 두 사람이",
     "이제 같은 방향을 바라보며",

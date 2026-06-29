@@ -723,3 +723,8 @@ select:focus {
     transform: none;
   }
 }
+
+.submit:disabled {
+  opacity: 0.62;
+  cursor: not-allowed;
+}

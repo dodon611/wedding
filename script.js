@@ -21,19 +21,13 @@ function applyTextData() {
 function renderInvitation() {
   const target = document.getElementById("invitationText");
   if (!target) return;
-
-  target.innerHTML = DATA.invitation
-    .map((line) => line === "" ? "<br />" : `<p>${line}</p>`)
-    .join("");
+  target.innerHTML = DATA.invitation.map((line) => line === "" ? "<br />" : `<p>${line}</p>`).join("");
 }
 
 function renderParkingNotice() {
   const target = document.getElementById("parkingNotice");
   if (!target) return;
-
-  target.innerHTML = DATA.venue.parking
-    .map((line) => `<p>${line}</p>`)
-    .join("");
+  target.innerHTML = DATA.venue.parking.map((line) => `<p>${line}</p>`).join("");
 }
 
 function renderMapButtons() {
@@ -82,7 +76,6 @@ function getDdayDifference() {
 }
 
 function animateNumber(element, target) {
-  const start = 0;
   const duration = 900;
   const startTime = performance.now();
   const absoluteTarget = Math.abs(target);
@@ -90,13 +83,9 @@ function animateNumber(element, target) {
   function update(now) {
     const progress = Math.min((now - startTime) / duration, 1);
     const eased = 1 - Math.pow(1 - progress, 3);
-    const value = Math.round(start + (absoluteTarget - start) * eased);
+    element.textContent = Math.round(absoluteTarget * eased);
 
-    element.textContent = value;
-
-    if (progress < 1) {
-      requestAnimationFrame(update);
-    }
+    if (progress < 1) requestAnimationFrame(update);
   }
 
   requestAnimationFrame(update);
@@ -126,15 +115,12 @@ function getGoogleCalendarUrl() {
   const text = encodeURIComponent(`${DATA.groom.en} & ${DATA.bride.en} Wedding`);
   const location = encodeURIComponent(`${DATA.venue.address}, ${DATA.venue.name} ${DATA.venue.floor}`);
   const details = encodeURIComponent(`${DATA.groom.en} & ${DATA.bride.en} 결혼식`);
-
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${start}/${end}&details=${details}&location=${location}`;
 }
 
 function initCalendarButtons() {
   const googleButton = document.getElementById("googleCalendarButton");
-  if (googleButton) {
-    googleButton.href = getGoogleCalendarUrl();
-  }
+  if (googleButton) googleButton.href = getGoogleCalendarUrl();
 }
 
 function showToast(message) {
@@ -142,7 +128,7 @@ function showToast(message) {
   const toastMessage = document.getElementById("toastMessage");
   toastMessage.textContent = message;
   toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 1700);
+  setTimeout(() => toast.classList.remove("show"), 1800);
 }
 
 function copyText(text) {
@@ -151,22 +137,47 @@ function copyText(text) {
     .catch(() => showToast("복사에 실패했습니다"));
 }
 
-function submitRSVP(event) {
+async function submitRSVP(event) {
   event.preventDefault();
 
-  const attend = document.getElementById("attend").value;
-  const name = document.getElementById("name").value;
-  const count = document.getElementById("count").value;
+  const submitButton = document.getElementById("rsvpSubmitButton");
+  const payload = {
+    attend: document.getElementById("attend").value,
+    name: document.getElementById("name").value.trim(),
+    count: document.getElementById("count").value
+  };
 
-  console.log({ attend, name, count });
+  if (!DATA.rsvp?.endpoint) {
+    showToast("RSVP 연결 정보가 없습니다");
+    return;
+  }
 
-  showToast("제출되었습니다");
-  event.target.reset();
+  submitButton.disabled = true;
+  submitButton.textContent = "제출 중입니다...";
+
+  try {
+    await fetch(DATA.rsvp.endpoint, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    showToast("참석 여부가 제출되었습니다");
+    event.target.reset();
+  } catch (error) {
+    console.error(error);
+    showToast("제출에 실패했습니다");
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = "참석 여부 제출하기";
+  }
 }
 
 function initRevealAnimation() {
   const targets = document.querySelectorAll(".reveal");
-
   if (!("IntersectionObserver" in window)) {
     targets.forEach((target) => target.classList.add("show"));
     return;
@@ -179,10 +190,7 @@ function initRevealAnimation() {
         observer.unobserve(entry.target);
       }
     });
-  }, {
-    threshold: 0.14,
-    rootMargin: "0px 0px -40px 0px"
-  });
+  }, { threshold: 0.14, rootMargin: "0px 0px -40px 0px" });
 
   targets.forEach((target) => observer.observe(target));
 }
@@ -192,9 +200,8 @@ function initScrollProgress() {
   if (!progress) return;
 
   const update = () => {
-    const scrollTop = window.scrollY;
     const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const percentage = documentHeight > 0 ? (scrollTop / documentHeight) * 100 : 0;
+    const percentage = documentHeight > 0 ? (window.scrollY / documentHeight) * 100 : 0;
     progress.style.width = `${Math.min(100, Math.max(0, percentage))}%`;
   };
 
@@ -215,7 +222,6 @@ function setMusicUi(playing) {
 function fadeInAudio(audio, targetVolume, duration) {
   clearInterval(fadeTimer);
   audio.volume = 0;
-
   const steps = 20;
   const interval = duration / steps;
   let currentStep = 0;
@@ -223,11 +229,7 @@ function fadeInAudio(audio, targetVolume, duration) {
   fadeTimer = setInterval(() => {
     currentStep += 1;
     audio.volume = Math.min(targetVolume, (targetVolume / steps) * currentStep);
-
-    if (currentStep >= steps) {
-      clearInterval(fadeTimer);
-      audio.volume = targetVolume;
-    }
+    if (currentStep >= steps) clearInterval(fadeTimer);
   }, interval);
 }
 
@@ -257,7 +259,6 @@ async function playMusic() {
 
 function stopMusic() {
   if (!bgmAudio) return;
-
   clearInterval(fadeTimer);
   bgmAudio.pause();
   bgmAudio.currentTime = 0;
@@ -271,14 +272,7 @@ function initMusic() {
   if (!button) return;
 
   setMusicUi(false);
-
-  button.addEventListener("click", () => {
-    if (isMusicPlaying) {
-      stopMusic();
-    } else {
-      playMusic();
-    }
-  });
+  button.addEventListener("click", () => isMusicPlaying ? stopMusic() : playMusic());
 }
 
 function prepareLazyImages() {
