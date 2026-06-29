@@ -23,7 +23,7 @@
     <span id="musicLabel">OFF</span>
   </button>
 
-  <audio id="bgm" preload="auto" loop></audio>
+  <audio id="bgm" preload="none" loop></audio>
 
   <main class="page">
     <section class="cover">
@@ -65,7 +65,10 @@
     <section class="reveal">
       <p class="section-title">Wedding Day</p>
       <div class="info-card">
-        <p class="dday" id="dday">D-Day</p>
+        <p class="dday">
+          D-<span id="ddayNumber">0</span>
+        </p>
+        <p class="dday-caption">Until Our Wedding Day</p>
         <p class="big-date" data-text="display.date">2027. 10. 23</p>
         <p class="sub-text" data-text="display.time">토요일 오후 12시 10분</p>
 
@@ -76,7 +79,10 @@
         <div class="info-row"><span>장소</span><strong data-text="venue.name">광명무역센터컨벤션</strong></div>
         <div class="info-row"><span>주소</span><strong data-text="venue.address">경기 광명시 일직로 72</strong></div>
 
-        <a class="button primary" href="wedding.ics" download>캘린더에 추가하기</a>
+        <div class="calendar-buttons">
+          <a class="button primary" href="wedding.ics" download>캘린더 파일 저장</a>
+          <a class="button subtle" id="googleCalendarButton" target="_blank" rel="noopener">Google Calendar에 추가</a>
+        </div>
       </div>
     </section>
 
@@ -170,7 +176,10 @@
     </section>
   </main>
 
-  <div id="toast" class="toast">복사되었습니다</div>
+  <div id="toast" class="toast">
+    <span class="toast-icon">✓</span>
+    <span id="toastMessage">복사되었습니다</span>
+  </div>
 
   <script src="data.js"></script>
   <script src="script.js"></script>

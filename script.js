@@ -74,30 +74,75 @@ function renderAccounts() {
   }).join("");
 }
 
-function updateDday() {
-  const ddayElement = document.getElementById("dday");
-  if (!ddayElement) return;
-
+function getDdayDifference() {
   const today = new Date();
   const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   const weddingDay = new Date(WEDDING_DATE.getFullYear(), WEDDING_DATE.getMonth(), WEDDING_DATE.getDate());
+  return Math.ceil((weddingDay - startOfToday) / (1000 * 60 * 60 * 24));
+}
 
-  const diff = Math.ceil((weddingDay - startOfToday) / (1000 * 60 * 60 * 24));
+function animateNumber(element, target) {
+  const start = 0;
+  const duration = 900;
+  const startTime = performance.now();
+  const absoluteTarget = Math.abs(target);
+
+  function update(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const value = Math.round(start + (absoluteTarget - start) * eased);
+
+    element.textContent = value;
+
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    }
+  }
+
+  requestAnimationFrame(update);
+}
+
+function updateDday() {
+  const numberElement = document.getElementById("ddayNumber");
+  const wrapper = numberElement?.parentElement;
+  if (!numberElement || !wrapper) return;
+
+  const diff = getDdayDifference();
 
   if (diff > 0) {
-    ddayElement.textContent = `D-${diff}`;
+    wrapper.firstChild.textContent = "D-";
+    animateNumber(numberElement, diff);
   } else if (diff === 0) {
-    ddayElement.textContent = "D-Day";
+    wrapper.textContent = "D-Day";
   } else {
-    ddayElement.textContent = `D+${Math.abs(diff)}`;
+    wrapper.firstChild.textContent = "D+";
+    animateNumber(numberElement, diff);
+  }
+}
+
+function getGoogleCalendarUrl() {
+  const start = "20271023T031000Z";
+  const end = "20271023T051000Z";
+  const text = encodeURIComponent(`${DATA.groom.en} & ${DATA.bride.en} Wedding`);
+  const location = encodeURIComponent(`${DATA.venue.address}, ${DATA.venue.name} ${DATA.venue.floor}`);
+  const details = encodeURIComponent(`${DATA.groom.en} & ${DATA.bride.en} 결혼식`);
+
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${start}/${end}&details=${details}&location=${location}`;
+}
+
+function initCalendarButtons() {
+  const googleButton = document.getElementById("googleCalendarButton");
+  if (googleButton) {
+    googleButton.href = getGoogleCalendarUrl();
   }
 }
 
 function showToast(message) {
   const toast = document.getElementById("toast");
-  toast.textContent = message;
+  const toastMessage = document.getElementById("toastMessage");
+  toastMessage.textContent = message;
   toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 1600);
+  setTimeout(() => toast.classList.remove("show"), 1700);
 }
 
 function copyText(text) {
@@ -205,7 +250,7 @@ async function playMusic() {
     setMusicUi(true);
     fadeInAudio(bgmAudio, DATA.music.volume ?? 0.75, DATA.music.fadeInMs ?? 1000);
   } catch (error) {
-    showToast("음악 파일을 확인해주세요");
+    showToast("음악 파일 준비 중입니다");
     console.error(error);
   }
 }
@@ -236,6 +281,13 @@ function initMusic() {
   });
 }
 
+function prepareLazyImages() {
+  document.querySelectorAll("img").forEach((img) => {
+    img.loading = "lazy";
+    img.decoding = "async";
+  });
+}
+
 document.getElementById("copyAddressButton")?.addEventListener("click", () => {
   copyText(DATA.venue.address);
 });
@@ -245,7 +297,9 @@ renderInvitation();
 renderParkingNotice();
 renderMapButtons();
 renderAccounts();
+initCalendarButtons();
 updateDday();
 initRevealAnimation();
 initScrollProgress();
 initMusic();
+prepareLazyImages();
