@@ -5,88 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wedding RSVP Dashboard</title>
   <style>
-    :root { --bg:#fbf8f4; --text:#2c2926; --muted:#8b8178; --gold:#b89a62; --line:#e9dfd3; }
-    * { box-sizing:border-box; }
-    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif; background:#eee7de; color:var(--text); }
-    .page { max-width:430px; min-height:100vh; margin:0 auto; padding:42px 22px; background:var(--bg); }
-    .header { text-align:center; margin-bottom:34px; }
-    .eyebrow { margin:0 0 10px; font-family:Georgia,"Times New Roman",serif; letter-spacing:.16em; color:var(--gold); font-size:13px; }
-    h1 { margin:0; font-family:Georgia,"Times New Roman",serif; font-size:29px; font-weight:400; }
-    .subtitle { margin:10px 0 0; color:var(--muted); font-size:14px; }
-    .grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:18px; }
-    .card { background:rgba(255,255,255,.92); border:1px solid var(--line); border-radius:22px; padding:20px 16px; box-shadow:0 12px 30px rgba(70,55,37,.06); }
-    .label { margin:0 0 8px; color:var(--muted); font-size:13px; }
-    .value { margin:0; font-family:Georgia,"Times New Roman",serif; color:var(--gold); font-size:30px; }
-    .section-title { margin:30px 0 12px; font-size:17px; font-weight:600; }
-    .list { display:grid; gap:10px; }
-    .row { background:#fff; border:1px solid var(--line); border-radius:16px; padding:14px; display:grid; grid-template-columns:1fr auto; gap:8px; align-items:center; }
-    .name { font-weight:600; }
-    .meta { color:var(--muted); font-size:13px; margin-top:3px; }
-    .badge { border-radius:999px; padding:6px 10px; background:#f1e8dc; color:#8a6a39; font-size:12px; white-space:nowrap; }
-    .button { width:100%; margin-top:18px; border:1px solid var(--gold); background:var(--gold); color:#fff; border-radius:999px; padding:13px; font-size:14px; cursor:pointer; }
-    .empty { text-align:center; color:var(--muted); border:1px dashed var(--line); border-radius:18px; padding:28px 14px; background:rgba(255,255,255,.52); }
-    .error { margin-top:20px; padding:14px; border-radius:16px; background:#fff2f2; border:1px solid #f0c4c4; color:#8c3e3e; font-size:14px; display:none; }
+    :root{--bg:#fbf8f4;--text:#2c2926;--muted:#8b8178;--gold:#b89a62;--line:#e9dfd3}*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;background:#eee7de;color:var(--text)}.page{max-width:430px;min-height:100vh;margin:0 auto;padding:42px 22px;background:var(--bg)}.header{text-align:center;margin-bottom:30px}.eyebrow{font-family:Georgia,serif;letter-spacing:.16em;color:var(--gold);font-size:13px}h1{margin:0;font-family:Georgia,serif;font-size:29px;font-weight:400}.subtitle{color:var(--muted);font-size:14px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.card{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:22px;padding:20px 16px;box-shadow:0 12px 30px rgba(70,55,37,.06)}.label{margin:0 0 8px;color:var(--muted);font-size:13px}.value{margin:0;font-family:Georgia,serif;color:var(--gold);font-size:30px}.button{width:100%;margin-top:18px;border:1px solid var(--gold);background:var(--gold);color:#fff;border-radius:999px;padding:13px;font-size:14px}.section-title{margin:30px 0 12px;font-size:17px}.list{display:grid;gap:10px}.row{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.name{font-weight:600}.meta{color:var(--muted);font-size:13px;margin-top:3px}.badge{border-radius:999px;padding:6px 10px;background:#f1e8dc;color:#8a6a39;font-size:12px}.empty{text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:18px;padding:28px 14px;background:rgba(255,255,255,.52)}.error{display:none;margin-top:20px;padding:14px;border-radius:16px;background:#fff2f2;border:1px solid #f0c4c4;color:#8c3e3e;font-size:14px}
   </style>
 </head>
 <body>
   <main class="page">
-    <header class="header">
-      <p class="eyebrow">WEDDING DASHBOARD</p>
-      <h1>DONMYEONG<br />&amp;<br />DOHUI</h1>
-      <p class="subtitle">RSVP 응답 현황</p>
-    </header>
+    <header class="header"><p class="eyebrow">WEDDING DASHBOARD</p><h1>DONMYEONG<br />&amp;<br />DOHUI</h1><p class="subtitle">RSVP 응답 현황</p></header>
     <section class="grid">
       <div class="card"><p class="label">총 응답</p><p class="value" id="totalResponses">0</p></div>
-      <div class="card"><p class="label">예상 총인원</p><p class="value" id="totalGuests">0</p></div>
-      <div class="card"><p class="label">참석 O</p><p class="value" id="attendO">0</p></div>
-      <div class="card"><p class="label">참석 X</p><p class="value" id="attendX">0</p></div>
+      <div class="card"><p class="label">예상 인원</p><p class="value" id="totalGuests">0</p></div>
+      <div class="card"><p class="label">참석 O</p><p class="value" id="attendCount">0</p></div>
+      <div class="card"><p class="label">식사 O</p><p class="value" id="mealCount">0</p></div>
       <div class="card"><p class="label">신랑측</p><p class="value" id="groomSide">0</p></div>
       <div class="card"><p class="label">신부측</p><p class="value" id="brideSide">0</p></div>
-      <div class="card"><p class="label">식사 O</p><p class="value" id="mealO">0</p></div>
-      <div class="card"><p class="label">식사 미정</p><p class="value" id="mealPending">0</p></div>
     </section>
     <button class="button" onclick="loadDashboard()">새로고침</button>
     <div class="error" id="errorBox">데이터를 불러오지 못했습니다.</div>
-    <h2 class="section-title">최근 응답</h2>
-    <section class="list" id="recentList"><div class="empty">아직 응답이 없습니다.</div></section>
+    <h2 class="section-title">최근 응답</h2><section class="list" id="recentList"><div class="empty">아직 응답이 없습니다.</div></section>
   </main>
-  <script>
-    const ENDPOINT = "https://script.google.com/macros/s/AKfycbxzK-odr7JPJ-DJIoXfESVTxbUuOeniQuG7BQhJn6UEVUABULKNbWoZqDB4TK3aArcbBQ/exec";
-    function toNumber(value) { const n=parseInt(value,10); return Number.isNaN(n)?0:n; }
-    function renderDashboard(response) {
-      const rows = response.data || [];
-      const valid = rows.filter(row => row.name);
-      const attendO = valid.filter(row => row.attend === "O");
-      document.getElementById("totalResponses").textContent = valid.length;
-      document.getElementById("attendO").textContent = attendO.length;
-      document.getElementById("attendX").textContent = valid.filter(row => row.attend === "X").length;
-      document.getElementById("groomSide").textContent = valid.filter(row => row.side === "신랑측").length;
-      document.getElementById("brideSide").textContent = valid.filter(row => row.side === "신부측").length;
-      document.getElementById("mealO").textContent = valid.filter(row => row.meal === "O").length;
-      document.getElementById("mealPending").textContent = valid.filter(row => row.meal === "미정").length;
-      document.getElementById("totalGuests").textContent = valid.reduce((sum,row)=>sum+toNumber(row.total),0);
-      const list = document.getElementById("recentList");
-      if (valid.length === 0) { list.innerHTML = '<div class="empty">아직 응답이 없습니다.</div>'; return; }
-      list.innerHTML = valid.slice().reverse().slice(0,20).map(row => `
-        <div class="row">
-          <div>
-            <div class="name">${row.name}</div>
-            <div class="meta">${row.side} · 참석 ${row.attend} · 식사 ${row.meal} · 동행 ${row.companions} · 총 ${row.total}명</div>
-          </div>
-          <div class="badge">${row.attend}</div>
-        </div>
-      `).join("");
-    }
-    function loadDashboard() {
-      document.getElementById("errorBox").style.display = "none";
-      const old = document.getElementById("jsonpLoader"); if (old) old.remove();
-      const script = document.createElement("script");
-      script.id = "jsonpLoader";
-      script.src = ENDPOINT + "?callback=renderDashboard&v=" + Date.now();
-      script.onerror = () => document.getElementById("errorBox").style.display = "block";
-      document.body.appendChild(script);
-    }
-    loadDashboard();
-  </script>
-</body>
-</html>
+<script>
+const ENDPOINT="https://script.google.com/macros/s/AKfycbxzK-odr7JPJ-DJIoXfESVTxbUuOeniQuG7BQhJn6UEVUABULKNbWoZqDB4TK3aArcbBQ/exec";
+function n(v){return parseInt(v,10)||0}function renderDashboard(res){const rows=res.data||[];const valid=rows.filter(r=>r.name);const attend=valid.filter(r=>r.attend==='O');const meal=valid.filter(r=>r.meal==='O');document.getElementById('totalResponses').textContent=valid.length;document.getElementById('attendCount').textContent=attend.length;document.getElementById('mealCount').textContent=meal.length;document.getElementById('groomSide').textContent=valid.filter(r=>r.side==='신랑측').length;document.getElementById('brideSide').textContent=valid.filter(r=>r.side==='신부측').length;document.getElementById('totalGuests').textContent=attend.reduce((s,r)=>s+n(r.total),0);const list=document.getElementById('recentList');if(!valid.length){list.innerHTML='<div class="empty">아직 응답이 없습니다.</div>';return}list.innerHTML=valid.slice().reverse().slice(0,30).map(r=>`<div class="row"><div><div class="name">${r.name}</div><div class="meta">${r.side} · 참석 ${r.attend} · 식사 ${r.meal} · 동행 ${r.companion}</div></div><div class="badge">총 ${r.total}명</div></div>`).join('')}
+function loadDashboard(){document.getElementById('errorBox').style.display='none';const old=document.getElementById('jsonpLoader');if(old)old.remove();const s=document.createElement('script');s.id='jsonpLoader';s.src=ENDPOINT+'?callback=renderDashboard&v='+Date.now();s.onerror=()=>document.getElementById('errorBox').style.display='block';document.body.appendChild(s)}loadDashboard();
+</script>
+</body></html>

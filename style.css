@@ -730,14 +730,12 @@ select:focus {
 }
 
 
-
-/* v1.1.0 RSVP renewal */
+/* v1.1.1 real project fixes */
 .family-card {
-  background: rgba(255,255,255,0.72);
+  background: rgba(255,255,255,0.66);
   border: 1px solid var(--line);
   border-radius: 24px;
-  padding: 30px 20px;
-  box-shadow: 0 12px 30px rgba(70, 55, 37, 0.05);
+  padding: 28px 20px;
 }
 .family-line {
   margin: 0 0 8px;
@@ -746,67 +744,45 @@ select:focus {
 }
 .family-name {
   margin: 0;
-  font-size: 22px;
-  letter-spacing: 0.12em;
+  font-size: 24px;
+  letter-spacing: 0.18em;
   color: var(--text);
 }
 .family-mark {
-  margin: 22px 0;
   color: var(--gold);
-  font-size: 16px;
+  margin: 22px 0;
 }
-.rsvp-fieldset {
+.gallery-item, .map-image-button {
+  display: block;
+  width: 100%;
   border: 0;
-  margin: 0 0 18px;
   padding: 0;
+  background: transparent;
+  cursor: pointer;
 }
-.rsvp-fieldset legend {
+.gallery-item {
+  aspect-ratio: 1/1;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(70,55,37,0.08);
+}
+.gallery-item img, .map-image-button img {
   display: block;
-  margin-bottom: 9px;
-  font-size: 14px;
-  color: #4c443c;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-.rsvp-fieldset legend span {
-  color: var(--muted);
-  font-size: 12px;
-}
-.radio-grid {
-  display: grid;
-  gap: 8px;
-}
-.radio-grid.two { grid-template-columns: repeat(2, 1fr); }
-.radio-grid.three { grid-template-columns: repeat(3, 1fr); }
-.radio-grid.four { grid-template-columns: repeat(2, 1fr); }
-.radio-card {
-  display: block;
-  position: relative;
-  margin: 0;
-}
-.radio-card input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-.radio-card span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
+.map-image-button {
+  border-radius: 24px;
+  overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  box-shadow: 0 14px 34px rgba(70,55,37,0.07);
+  margin-bottom: 24px;
   background: #fff;
-  color: #5a5148;
-  font-size: 14px;
-  transition: border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
 }
-.radio-card input:checked + span {
-  border-color: var(--gold);
-  background: #f1e8dc;
-  color: var(--gold-dark);
-  font-weight: 700;
-}
-.radio-card:active span {
-  transform: scale(0.985);
+.map-image-button img {
+  height: auto;
+  object-fit: contain;
 }
 .rsvp-modal {
   position: fixed;
@@ -815,48 +791,104 @@ select:focus {
   display: none;
   align-items: center;
   justify-content: center;
-  padding: 22px;
-}
-.rsvp-modal.show {
-  display: flex;
-}
-.rsvp-modal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(35,31,28,0.58);
+  padding: 24px;
+  background: rgba(35,31,28,0.42);
   backdrop-filter: blur(8px);
 }
+.rsvp-modal.show { display: flex; }
 .rsvp-modal-card {
+  width: min(100%, 360px);
   position: relative;
-  width: min(386px, 100%);
-  max-height: 86vh;
-  overflow-y: auto;
   background: var(--bg);
-  border: 1px solid rgba(255,255,255,0.44);
+  border: 1px solid var(--line);
   border-radius: 26px;
-  padding: 34px 22px 24px;
+  padding: 34px 24px 26px;
   text-align: center;
-  box-shadow: 0 24px 70px rgba(0,0,0,0.28);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.22);
 }
-.rsvp-modal-card form {
-  box-shadow: none;
-  background: rgba(255,255,255,0.82);
-}
-.rsvp-modal-close {
+.modal-close {
   position: absolute;
-  top: 13px;
   right: 14px;
+  top: 12px;
   width: 34px;
   height: 34px;
   border: 0;
   border-radius: 50%;
   background: rgba(255,255,255,0.72);
-  color: #5a5148;
   font-size: 22px;
-  line-height: 1;
+  color: var(--muted);
   cursor: pointer;
 }
-.submit:disabled {
-  opacity: 0.62;
-  cursor: not-allowed;
+.modal-eyebrow { margin-bottom: 14px; }
+.modal-text {
+  color: #4b453e;
+  font-size: 15px;
+  margin: -12px 0 22px;
+  line-height: 1.8;
+}
+.radio-group {
+  border: 0;
+  padding: 0;
+  margin: 20px 0 0;
+}
+.radio-group legend {
+  display: block;
+  margin-bottom: 9px;
+  font-size: 14px;
+  color: #4c443c;
+}
+.radio-group small {
+  color: var(--muted);
+  font-weight: 400;
+}
+.radio-card {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 5px 8px 0;
+  cursor: pointer;
+}
+.radio-card input { display: none; }
+.radio-card span {
+  min-width: 72px;
+  padding: 10px 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  text-align: center;
+  font-size: 14px;
+}
+.radio-card input:checked + span {
+  border-color: var(--gold);
+  background: #f1e8dc;
+  color: var(--gold-dark);
+  font-weight: 600;
+}
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10002;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+  background: rgba(0,0,0,0.82);
+}
+.lightbox.show { display: flex; }
+.lightbox img {
+  max-width: 100%;
+  max-height: 88vh;
+  border-radius: 14px;
+}
+.lightbox-close {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.88);
+  font-size: 26px;
+  cursor: pointer;
 }
