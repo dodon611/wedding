@@ -140,44 +140,66 @@ async function submitRSVP(event) {
   event.preventDefault();
 
   const form = event.target;
-  const submitButton = document.getElementById("rsvpSubmitButton");
-  const name = document.getElementById("name").value.trim();
-  const side = form.querySelector('input[name="side"]:checked')?.value || "";
-  const attend = form.querySelector('input[name="attend"]:checked')?.value || "";
-  const meal = form.querySelector('input[name="meal"]:checked')?.value || "";
-  const companion = form.querySelector('input[name="companion"]:checked')?.value || "0";
+  const submitButton = form.querySelector('button[type="submit"]');
+  const formData = new FormData(form);
 
-  const companionNumber = companion.includes("3") ? 3 : parseInt(companion, 10) || 0;
+  const side = formData.get("side") || document.getElementById("side")?.value || "";
+  const attend = formData.get("attend") || document.getElementById("attend")?.value || "";
+  const meal = formData.get("meal") || document.getElementById("meal")?.value || "";
+  const name = (formData.get("name") || document.getElementById("name")?.value || "").trim();
+  const companion = formData.get("companion") || document.getElementById("count")?.value || "0";
+
+  const companionNumber = String(companion).includes("3") ? 3 : parseInt(companion, 10) || 0;
   const total = attend === "O" ? 1 + companionNumber : 0;
 
-  const payload = { side, name, attend, meal, companion, total };
+  const payload = {
+    side,
+    name,
+    attend,
+    meal,
+    companion,
+    total
+  };
+
+  if (!side || !attend || !meal || !name || companion === "") {
+    showToast("입력 항목을 확인해주세요");
+    return;
+  }
 
   if (!DATA.rsvp?.endpoint) {
     showToast("RSVP 연결 정보가 없습니다");
     return;
   }
 
-  submitButton.disabled = true;
-  submitButton.textContent = "제출 중입니다...";
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.textContent = "전송 중입니다...";
+  }
 
   try {
     await fetch(DATA.rsvp.endpoint, {
       method: "POST",
       mode: "no-cors",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
       body: JSON.stringify(payload)
     });
 
-    showToast("참석 여부가 제출되었습니다");
-    localStorage.setItem("weddingRsvpSubmitted", "true");
-    closeRsvpModal();
+    showToast("참석 여부가 전달되었습니다");
     form.reset();
+
+    if (form.id === "popupRsvpForm") {
+      setTimeout(() => closeRsvpModal(), 700);
+    }
   } catch (error) {
     console.error(error);
     showToast("제출에 실패했습니다");
   } finally {
-    submitButton.disabled = false;
-    submitButton.textContent = "참석 여부 제출하기";
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.textContent = form.id === "popupRsvpForm" ? "전송하기" : "참석 여부 제출하기";
+    }
   }
 }
 
@@ -359,3 +381,47 @@ initMusic();
 prepareLazyImages();
 initRsvpModal();
 initLightbox();
+
+
+function openRsvpModal() {
+  const modal = document.getElementById("rsvpModal");
+  if (!modal) return;
+  modal.classList.add("is-open");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+  showRsvpIntroStep();
+}
+
+function closeRsvpModal() {
+  const modal = document.getElementById("rsvpModal");
+  if (!modal) return;
+  modal.classList.remove("is-open");
+  modal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+  localStorage.setItem("rsvpModalClosed", "true");
+}
+
+function showRsvpIntroStep() {
+  document.getElementById("rsvpIntroStep")?.classList.add("is-active");
+  document.getElementById("rsvpFormStep")?.classList.remove("is-active");
+}
+
+function showRsvpFormStep() {
+  document.getElementById("rsvpIntroStep")?.classList.remove("is-active");
+  document.getElementById("rsvpFormStep")?.classList.add("is-active");
+}
+
+function initRsvpModal() {
+  const modal = document.getElementById("rsvpModal");
+  if (!modal) return;
+
+  document.getElementById("rsvpModalClose")?.addEventListener("click", closeRsvpModal);
+  document.getElementById("openPopupFormButton")?.addEventListener("click", showRsvpFormStep);
+
+  modal.querySelector(".rsvp-modal-backdrop")?.addEventListener("click", closeRsvpModal);
+
+  if (!localStorage.getItem("rsvpModalClosed")) {
+    setTimeout(openRsvpModal, 650);
+  }
+}
+

@@ -12,7 +12,7 @@
   <meta property="og:url" content="https://dodon611.github.io/wedding/" />
   <meta property="og:type" content="website" />
 
-  <link rel="stylesheet" href="style.css?v=1.1.2" />
+  <link rel="stylesheet" href="style.css?v=1.1.3" />
 </head>
 
 <body>
@@ -205,12 +205,80 @@
     <img id="lightboxImage" alt="확대 이미지" />
   </div>
 
+
+  <div class="rsvp-modal" id="rsvpModal" aria-hidden="true">
+    <div class="rsvp-modal-backdrop"></div>
+    <div class="rsvp-modal-panel" role="dialog" aria-modal="true" aria-label="참석 여부 전달">
+      <button class="rsvp-modal-close" type="button" id="rsvpModalClose" aria-label="팝업 닫기">×</button>
+
+      <div class="rsvp-modal-step is-active" id="rsvpIntroStep">
+        <p class="section-title">RSVP</p>
+        <h2>참석 여부를 알려주세요</h2>
+        <p class="rsvp-modal-text">
+          원활한 예식 준비를 위해<br />
+          참석 여부를 미리 전달해 주시면<br />
+          큰 도움이 됩니다.
+        </p>
+        <button class="submit" type="button" id="openPopupFormButton">참석 여부 전달하기</button>
+      </div>
+
+      <div class="rsvp-modal-step" id="rsvpFormStep">
+        <p class="section-title">RSVP</p>
+        <h2>참석 여부 전달</h2>
+
+        <form id="popupRsvpForm" class="rsvp-form" onsubmit="submitRSVP(event)">
+          <div class="field-group">
+            <p class="field-title">어느 측 하객이신가요?</p>
+            <div class="radio-grid two">
+              <label><input type="radio" name="side" value="신랑측" required /><span>신랑측</span></label>
+              <label><input type="radio" name="side" value="신부측" required /><span>신부측</span></label>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <p class="field-title">참석 여부</p>
+            <div class="radio-grid three">
+              <label><input type="radio" name="attend" value="O" required /><span>O</span></label>
+              <label><input type="radio" name="attend" value="X" required /><span>X</span></label>
+              <label><input type="radio" name="attend" value="미정" required /><span>미정</span></label>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <p class="field-title">식사 여부</p>
+            <div class="radio-grid three">
+              <label><input type="radio" name="meal" value="O" required /><span>O</span></label>
+              <label><input type="radio" name="meal" value="X" required /><span>X</span></label>
+              <label><input type="radio" name="meal" value="미정" required /><span>미정</span></label>
+            </div>
+          </div>
+
+          <label for="popupName">성함</label>
+          <input id="popupName" name="name" type="text" placeholder="성함을 입력해주세요" required />
+
+          <div class="field-group">
+            <p class="field-title">동행 인원 <small>본인 제외</small></p>
+            <div class="radio-grid four">
+              <label><input type="radio" name="companion" value="0" required /><span>0명</span></label>
+              <label><input type="radio" name="companion" value="1" required /><span>1명</span></label>
+              <label><input type="radio" name="companion" value="2" required /><span>2명</span></label>
+              <label><input type="radio" name="companion" value="3명 이상" required /><span>3명 이상</span></label>
+            </div>
+          </div>
+
+          <button class="submit" id="popupRsvpSubmitButton" type="submit">전송하기</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
   <div id="toast" class="toast">
     <span class="toast-icon">✓</span>
     <span id="toastMessage">복사되었습니다</span>
   </div>
 
-  <script src="data.js?v=1.1.2"></script>
-  <script src="script.js?v=1.1.2"></script>
+  <script src="data.js?v=1.1.3"></script>
+  <script src="script.js?v=1.1.3"></script>
 </body>
 </html>
