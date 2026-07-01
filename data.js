@@ -48,8 +48,8 @@ const WEDDING_DATA = {
   links: {
     siteUrl: "https://dodon611.github.io/wedding/",
     kakaoMap: "https://kko.kakao.com/UFSKCJ7fGI",
-    naverMap: "https://map.naver.com/p/search/광명무역센터컨벤션",
-    tmap: ""
+    naverMap: "https://map.naver.com/p/search/경기%20광명시%20일직로%2072",
+    tmap: "https://www.tmap.co.kr/search?searchKeyword=경기%20광명시%20일직로%2072"
   },
 
   rsvp: {
