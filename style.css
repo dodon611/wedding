@@ -728,3 +728,86 @@ select:focus {
   opacity: 0.62;
   cursor: not-allowed;
 }
+
+
+/* V9.1 Family section */
+.family {
+  padding-top: 64px;
+}
+
+.family-card {
+  position: relative;
+  background: rgba(255,255,255,0.82);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 26px 20px;
+  box-shadow: var(--shadow);
+}
+
+.family-side {
+  padding: 8px 0 18px;
+}
+
+.family-side + .family-mark + .family-side {
+  padding-top: 18px;
+}
+
+.family-label {
+  margin: 0 0 12px;
+  color: var(--gold);
+  font-size: 14px;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+}
+
+.family-parents {
+  margin: 0 0 8px;
+  color: #6a625a;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.family-name {
+  margin: 0;
+  font-size: 25px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--text);
+}
+
+.family-mark {
+  position: relative;
+  color: var(--gold);
+  font-size: 18px;
+  line-height: 1;
+  margin: 2px 0;
+}
+
+.family-mark::before,
+.family-mark::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 36%;
+  height: 1px;
+  background: var(--line);
+}
+
+.family-mark::before {
+  left: 0;
+}
+
+.family-mark::after {
+  right: 0;
+}
+
+/* V9.1 Gallery placeholder refinement */
+.photo-placeholder {
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.86);
+}
+
+.music-button {
+  top: 20px;
+}

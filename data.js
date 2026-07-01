@@ -1,7 +1,11 @@
 const WEDDING_DATA = {
   groom: {
     ko: "돈명",
+    fullName: "이돈명",
     en: "DONMYEONG",
+    parents: "이태준 · 박지연",
+    relation: "의 아들",
+    sideLabel: "신랑측",
     accountLabel: "신랑 측",
     bank: "신한은행",
     accountNumber: "110-281-575476"
@@ -9,7 +13,11 @@ const WEDDING_DATA = {
 
   bride: {
     ko: "도희",
+    fullName: "김도희",
     en: "DOHUI",
+    parents: "김홍곤 · 이명희",
+    relation: "의 딸",
+    sideLabel: "신부측",
     accountLabel: "신부 측",
     bank: "카카오뱅크",
     accountNumber: "3333-15-321321"
