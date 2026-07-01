@@ -5,7 +5,6 @@ const WEDDING_DATA = {
     en: "DONMYEONG",
     parents: "이태준 · 박지연",
     relation: "의 아들",
-    sideLabel: "신랑측",
     accountLabel: "신랑 측",
     bank: "신한은행",
     accountNumber: "110-281-575476"
@@ -17,7 +16,6 @@ const WEDDING_DATA = {
     en: "DOHUI",
     parents: "김홍곤 · 이명희",
     relation: "의 딸",
-    sideLabel: "신부측",
     accountLabel: "신부 측",
     bank: "카카오뱅크",
     accountNumber: "3333-15-321321"
@@ -35,13 +33,15 @@ const WEDDING_DATA = {
   },
 
   venue: {
-    name: "광명무역센터컨벤션",
+    shortName: "광명무역센터컨벤션",
+    name: "광명무역센터컨벤션 그랜드볼룸홀",
+    hall: "그랜드볼룸홀",
     address: "경기 광명시 일직로 72",
     floor: "3층",
     phone: "",
     parking: [
-      "주차 안내 문구는 예식장 최종 안내 확인 후 입력 예정입니다.",
-      "무료 주차 시간, 주차 등록 여부 확인 후 반영 예정입니다."
+      "무료 주차 시간은 2시간입니다.",
+      "주차 등록은 로비 웰컴드링크존 또는 연회장 앞에서 가능합니다."
     ]
   },
 
@@ -66,7 +66,20 @@ const WEDDING_DATA = {
     "더없는 기쁨으로 간직하겠습니다."
   ],
 
-  gallery: [],
+  family: {
+    title: "신랑 신부의 부모님",
+    groomSide: "신랑측",
+    brideSide: "신부측"
+  },
+
+  gallery: [
+    { src: "images/gallery-test-01.jpg", alt: "갤러리 테스트 사진" }
+  ],
+
+  locationMap: {
+    src: "images/location-map.png",
+    alt: "광명무역센터컨벤션 약도"
+  },
 
   music: {
     enabled: true,

@@ -47,7 +47,7 @@
         <div class="cover-divider"></div>
 
         <p class="cover-date" data-text="display.coverDate">2027. 10. 23 SAT</p>
-        <p class="cover-venue" data-text="venue.name">광명무역센터컨벤션</p>
+        <p class="cover-venue" data-text="venue.shortName">광명무역센터컨벤션</p>
       </div>
 
       <div class="scroll">
@@ -62,20 +62,22 @@
       <div id="invitationText"></div>
     </section>
 
-    <section class="family reveal">
+
+
+    <section class="family-section reveal">
       <p class="section-title">Family</p>
-      <h2>혼주</h2>
+      <h2 data-text="family.title">신랑 신부의 부모님</h2>
       <div class="family-card">
         <div class="family-side">
-          <p class="family-label" data-text="groom.sideLabel">신랑측</p>
+          <p class="family-label" data-text="family.groomSide">신랑측</p>
           <p class="family-parents"><span data-text="groom.parents">이태준 · 박지연</span> <span data-text="groom.relation">의 아들</span></p>
           <p class="family-name" data-text="groom.fullName">이돈명</p>
         </div>
 
-        <div class="family-mark">✦</div>
+        <div class="family-divider"><span>✦</span></div>
 
         <div class="family-side">
-          <p class="family-label" data-text="bride.sideLabel">신부측</p>
+          <p class="family-label" data-text="family.brideSide">신부측</p>
           <p class="family-parents"><span data-text="bride.parents">김홍곤 · 이명희</span> <span data-text="bride.relation">의 딸</span></p>
           <p class="family-name" data-text="bride.fullName">김도희</p>
         </div>
@@ -98,46 +100,29 @@
         <div class="info-row"><span>시간</span><strong data-text="display.time">오후 12시 10분</strong></div>
         <div class="info-row"><span>장소</span><strong data-text="venue.name">광명무역센터컨벤션</strong></div>
         <div class="info-row"><span>주소</span><strong data-text="venue.address">경기 광명시 일직로 72</strong></div>
-
-        <div class="calendar-buttons">
-          <a class="button primary" href="wedding.ics" download>캘린더 파일 저장</a>
-          <a class="button subtle" id="googleCalendarButton" target="_blank" rel="noopener">Google Calendar에 추가</a>
-        </div>
       </div>
     </section>
 
     <section class="reveal">
       <p class="section-title">Gallery</p>
       <h2>우리의 순간</h2>
-      <p class="guide-text">사진은 나중에 추가 예정입니다.</p>
+      <p class="guide-text">사진을 클릭하시면 확대해서 보실 수 있습니다.</p>
 
-      <div class="gallery-grid" id="galleryGrid">
-        <button class="photo-placeholder">PHOTO</button>
-        <button class="photo-placeholder">PHOTO</button>
-        <button class="photo-placeholder">PHOTO</button>
-        <button class="photo-placeholder">PHOTO</button>
-        <button class="photo-placeholder">PHOTO</button>
-        <button class="photo-placeholder">PHOTO</button>
-        <button class="photo-placeholder">PHOTO</button>
-        <button class="photo-placeholder">PHOTO</button>
-        <button class="photo-placeholder">PHOTO</button>
-      </div>
+      <div class="gallery-grid" id="galleryGrid"></div>
     </section>
 
     <section class="reveal">
       <p class="section-title">Location</p>
       <h2>오시는 길</h2>
 
-      <div class="map-preview" aria-label="지도 영역">
-        <div class="map-pin">⌖</div>
-        <div class="map-word">MAP</div>
-        <div class="map-line"></div>
-      </div>
+      <button class="map-image-button" type="button" id="mapImageButton" aria-label="약도 확대하기">
+        <img id="locationMapImage" src="images/location-map.png" alt="광명무역센터컨벤션 약도" loading="lazy" decoding="async" />
+      </button>
 
       <div class="location-summary">
         <p class="location-name" data-text="venue.name">광명무역센터컨벤션</p>
         <p class="location-address" data-text="venue.address">경기 광명시 일직로 72</p>
-        <p class="location-floor">예식장 <span data-text="venue.floor">3층</span></p>
+        <p class="location-floor"><span data-text="venue.floor">3층</span> · <span data-text="venue.hall">그랜드볼룸홀</span></p>
         <button class="button subtle" id="copyAddressButton">주소 복사하기</button>
       </div>
 
@@ -150,7 +135,7 @@
 
       <div class="notice compact">
         <strong>예식장 안내</strong>
-        <p>도착 후 <span data-text="venue.floor">3층</span> 광명무역센터컨벤션으로 이동해 주세요.</p>
+        <p>도착 후 광명무역센터 <span data-text="venue.floor">3층</span> <span data-text="venue.name">광명무역센터컨벤션 그랜드볼룸홀</span>로 이동해 주세요.</p>
       </div>
     </section>
 
@@ -199,6 +184,13 @@
   <div id="toast" class="toast">
     <span class="toast-icon">✓</span>
     <span id="toastMessage">복사되었습니다</span>
+  </div>
+
+
+
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <button class="lightbox-close" type="button" id="lightboxClose" aria-label="닫기">×</button>
+    <img id="lightboxImage" src="" alt="확대 이미지" />
   </div>
 
   <script src="data.js"></script>

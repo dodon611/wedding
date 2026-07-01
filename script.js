@@ -30,20 +30,42 @@ function renderParkingNotice() {
   target.innerHTML = DATA.venue.parking.map((line) => `<p>${line}</p>`).join("");
 }
 
+function renderGallery() {
+  const target = document.getElementById("galleryGrid");
+  if (!target) return;
+
+  const gallery = DATA.gallery || [];
+
+  if (gallery.length === 0) {
+    target.innerHTML = Array.from({ length: 6 })
+      .map(() => `<button class="photo-placeholder" type="button">PHOTO</button>`)
+      .join("");
+    return;
+  }
+
+  target.innerHTML = gallery
+    .map((photo, index) => `
+      <button class="gallery-item" type="button" data-src="${photo.src}" data-alt="${photo.alt || `Gallery ${index + 1}`}">
+        <img src="${photo.src}" alt="${photo.alt || `Gallery ${index + 1}`}" loading="lazy" decoding="async" />
+      </button>
+    `)
+    .join("");
+}
+
 function renderMapButtons() {
   const target = document.getElementById("mapButtons");
   if (!target) return;
 
   const buttons = [
-    { label: "카카오맵으로 보기", url: DATA.links.kakaoMap, primary: true },
-    { label: "네이버지도에서 보기", url: DATA.links.naverMap },
-    { label: "티맵에서 보기", url: DATA.links.tmap }
+    { label: "카카오맵으로 보기", url: DATA.links.kakaoMap, className: "map-kakao" },
+    { label: "네이버지도에서 보기", url: DATA.links.naverMap, className: "map-naver" },
+    { label: "티맵에서 보기", url: DATA.links.tmap, className: "map-tmap" }
   ];
 
   target.innerHTML = buttons
     .filter((button) => button.url)
     .map((button) => `
-      <a class="button ${button.primary ? "primary" : ""}" href="${button.url}" target="_blank" rel="noopener">
+      <a class="button map-button ${button.className}" href="${button.url}" target="_blank" rel="noopener">
         ${button.label}
       </a>
     `)
@@ -275,6 +297,53 @@ function initMusic() {
   button.addEventListener("click", () => isMusicPlaying ? stopMusic() : playMusic());
 }
 
+function initLightbox() {
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImage = document.getElementById("lightboxImage");
+  const closeButton = document.getElementById("lightboxClose");
+
+  if (!lightbox || !lightboxImage || !closeButton) return;
+
+  const openLightbox = (src, alt) => {
+    lightboxImage.src = src;
+    lightboxImage.alt = alt || "확대 이미지";
+    lightbox.classList.add("show");
+    lightbox.setAttribute("aria-hidden", "false");
+    document.body.classList.add("is-lightbox-open");
+  };
+
+  const closeLightbox = () => {
+    lightbox.classList.remove("show");
+    lightbox.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("is-lightbox-open");
+    setTimeout(() => {
+      lightboxImage.src = "";
+    }, 180);
+  };
+
+  document.addEventListener("click", (event) => {
+    const galleryButton = event.target.closest(".gallery-item");
+    if (galleryButton) {
+      openLightbox(galleryButton.dataset.src, galleryButton.dataset.alt);
+      return;
+    }
+
+    const mapButton = event.target.closest(".map-image-button");
+    if (mapButton) {
+      const img = mapButton.querySelector("img");
+      openLightbox(img.src, img.alt);
+    }
+  });
+
+  closeButton.addEventListener("click", closeLightbox);
+  lightbox.addEventListener("click", (event) => {
+    if (event.target === lightbox) closeLightbox();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && lightbox.classList.contains("show")) closeLightbox();
+  });
+}
+
 function prepareLazyImages() {
   document.querySelectorAll("img").forEach((img) => {
     img.loading = "lazy";
@@ -289,11 +358,12 @@ document.getElementById("copyAddressButton")?.addEventListener("click", () => {
 applyTextData();
 renderInvitation();
 renderParkingNotice();
+renderGallery();
 renderMapButtons();
 renderAccounts();
-initCalendarButtons();
 updateDday();
 initRevealAnimation();
 initScrollProgress();
 initMusic();
+initLightbox();
 prepareLazyImages();
