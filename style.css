@@ -1044,3 +1044,9 @@ body.modal-open {
     transform: translateY(0) scale(1);
   }
 }
+
+
+/* v1.1.5: remove redundant MAP label in location section */
+.map-word {
+  display: none !important;
+}
