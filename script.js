@@ -398,7 +398,6 @@ function closeRsvpModal() {
   modal.classList.remove("is-open");
   modal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
-  localStorage.setItem("rsvpModalClosed", "true");
 }
 
 function showRsvpIntroStep() {
@@ -420,8 +419,6 @@ function initRsvpModal() {
 
   modal.querySelector(".rsvp-modal-backdrop")?.addEventListener("click", closeRsvpModal);
 
-  if (!localStorage.getItem("rsvpModalClosed")) {
-    setTimeout(openRsvpModal, 650);
-  }
+  setTimeout(openRsvpModal, 650);
 }
 
