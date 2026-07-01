@@ -27,7 +27,7 @@ const WEDDING_DATA = {
     coverDate: "2027. 10. 23 SAT",
     date: "2027. 10. 23",
     fullDate: "2027년 10월 23일 토요일",
-    time: "토요일 오후 12시 10분"
+    time: "오후 12시 10분"
   },
 
   venue: {
