@@ -12,9 +12,7 @@ function getValueByPath(object, path) {
 function applyTextData() {
   document.querySelectorAll("[data-text]").forEach((element) => {
     const value = getValueByPath(DATA, element.dataset.text);
-    if (value !== undefined && value !== null) {
-      element.textContent = value;
-    }
+    if (value !== undefined && value !== null) element.textContent = value;
   });
 }
 
@@ -30,54 +28,23 @@ function renderParkingNotice() {
   target.innerHTML = DATA.venue.parking.map((line) => `<p>${line}</p>`).join("");
 }
 
-function renderGallery() {
-  const target = document.getElementById("galleryGrid");
-  if (!target) return;
-
-  const gallery = DATA.gallery || [];
-
-  if (gallery.length === 0) {
-    target.innerHTML = Array.from({ length: 6 })
-      .map(() => `<button class="photo-placeholder" type="button">PHOTO</button>`)
-      .join("");
-    return;
-  }
-
-  target.innerHTML = gallery
-    .map((photo, index) => `
-      <button class="gallery-item" type="button" data-src="${photo.src}" data-alt="${photo.alt || `Gallery ${index + 1}`}">
-        <img src="${photo.src}" alt="${photo.alt || `Gallery ${index + 1}`}" loading="lazy" decoding="async" />
-      </button>
-    `)
-    .join("");
-}
-
 function renderMapButtons() {
   const target = document.getElementById("mapButtons");
   if (!target) return;
-
   const buttons = [
-    { label: "카카오맵으로 보기", url: DATA.links.kakaoMap, className: "map-kakao" },
-    { label: "네이버지도에서 보기", url: DATA.links.naverMap, className: "map-naver" },
-    { label: "티맵에서 보기", url: DATA.links.tmap, className: "map-tmap" }
+    { label: "카카오맵으로 보기", url: DATA.links.kakaoMap, primary: true },
+    { label: "네이버지도에서 보기", url: DATA.links.naverMap }
   ];
-
   target.innerHTML = buttons
     .filter((button) => button.url)
-    .map((button) => `
-      <a class="button map-button ${button.className}" href="${button.url}" target="_blank" rel="noopener">
-        ${button.label}
-      </a>
-    `)
+    .map((button) => `<a class="button ${button.primary ? "primary" : ""}" href="${button.url}" target="_blank" rel="noopener">${button.label}</a>`)
     .join("");
 }
 
 function renderAccounts() {
   const target = document.getElementById("accountList");
   if (!target) return;
-
   const accounts = [DATA.groom, DATA.bride];
-
   target.innerHTML = accounts.map((person) => {
     const accountText = `${person.bank} ${person.accountNumber}`;
     return `
@@ -88,6 +55,55 @@ function renderAccounts() {
       </details>
     `;
   }).join("");
+}
+
+function rsvpFieldsTemplate() {
+  return `
+    <fieldset class="rsvp-fieldset">
+      <legend>어느 측 하객이신가요?</legend>
+      <div class="radio-grid two">
+        <label class="radio-card"><input type="radio" name="side" value="신랑측" required><span>신랑측</span></label>
+        <label class="radio-card"><input type="radio" name="side" value="신부측" required><span>신부측</span></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="rsvp-fieldset">
+      <legend>참석 여부</legend>
+      <div class="radio-grid three">
+        <label class="radio-card"><input type="radio" name="attend" value="O" required><span>O</span></label>
+        <label class="radio-card"><input type="radio" name="attend" value="X" required><span>X</span></label>
+        <label class="radio-card"><input type="radio" name="attend" value="미정" required><span>미정</span></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="rsvp-fieldset">
+      <legend>식사 여부</legend>
+      <div class="radio-grid three">
+        <label class="radio-card"><input type="radio" name="meal" value="O" required><span>O</span></label>
+        <label class="radio-card"><input type="radio" name="meal" value="X" required><span>X</span></label>
+        <label class="radio-card"><input type="radio" name="meal" value="미정" required><span>미정</span></label>
+      </div>
+    </fieldset>
+
+    <label for="name-${Math.random().toString(36).slice(2)}">성함</label>
+    <input name="name" type="text" placeholder="성함을 입력해주세요" required />
+
+    <fieldset class="rsvp-fieldset">
+      <legend>동행 인원 <span>(본인 제외)</span></legend>
+      <div class="radio-grid four">
+        <label class="radio-card"><input type="radio" name="companions" value="0" required><span>0명</span></label>
+        <label class="radio-card"><input type="radio" name="companions" value="1" required><span>1명</span></label>
+        <label class="radio-card"><input type="radio" name="companions" value="2" required><span>2명</span></label>
+        <label class="radio-card"><input type="radio" name="companions" value="3명 이상" required><span>3명 이상</span></label>
+      </div>
+    </fieldset>
+  `;
+}
+
+function renderRSVPForms() {
+  document.querySelectorAll("[data-rsvp-fields]").forEach((target) => {
+    target.innerHTML = rsvpFieldsTemplate();
+  });
 }
 
 function getDdayDifference() {
@@ -101,15 +117,12 @@ function animateNumber(element, target) {
   const duration = 900;
   const startTime = performance.now();
   const absoluteTarget = Math.abs(target);
-
   function update(now) {
     const progress = Math.min((now - startTime) / duration, 1);
     const eased = 1 - Math.pow(1 - progress, 3);
     element.textContent = Math.round(absoluteTarget * eased);
-
     if (progress < 1) requestAnimationFrame(update);
   }
-
   requestAnimationFrame(update);
 }
 
@@ -117,9 +130,7 @@ function updateDday() {
   const numberElement = document.getElementById("ddayNumber");
   const wrapper = numberElement?.parentElement;
   if (!numberElement || !wrapper) return;
-
   const diff = getDdayDifference();
-
   if (diff > 0) {
     wrapper.firstChild.textContent = "D-";
     animateNumber(numberElement, diff);
@@ -129,20 +140,6 @@ function updateDday() {
     wrapper.firstChild.textContent = "D+";
     animateNumber(numberElement, diff);
   }
-}
-
-function getGoogleCalendarUrl() {
-  const start = "20271023T031000Z";
-  const end = "20271023T051000Z";
-  const text = encodeURIComponent(`${DATA.groom.en} & ${DATA.bride.en} Wedding`);
-  const location = encodeURIComponent(`${DATA.venue.address}, ${DATA.venue.name} ${DATA.venue.floor}`);
-  const details = encodeURIComponent(`${DATA.groom.en} & ${DATA.bride.en} 결혼식`);
-  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${start}/${end}&details=${details}&location=${location}`;
-}
-
-function initCalendarButtons() {
-  const googleButton = document.getElementById("googleCalendarButton");
-  if (googleButton) googleButton.href = getGoogleCalendarUrl();
 }
 
 function showToast(message) {
@@ -159,15 +156,32 @@ function copyText(text) {
     .catch(() => showToast("복사에 실패했습니다"));
 }
 
+function companionToNumber(value) {
+  if (value === "3명 이상") return 3;
+  const number = parseInt(value, 10);
+  return Number.isNaN(number) ? 0 : number;
+}
+
 async function submitRSVP(event) {
   event.preventDefault();
-
-  const submitButton = document.getElementById("rsvpSubmitButton");
+  const form = event.target;
+  const submitButton = form.querySelector("button[type='submit']");
+  const formData = new FormData(form);
+  const companions = formData.get("companions");
+  const attend = formData.get("attend");
   const payload = {
-    attend: document.getElementById("attend").value,
-    name: document.getElementById("name").value.trim(),
-    count: document.getElementById("count").value
+    side: formData.get("side"),
+    name: String(formData.get("name") || "").trim(),
+    attend,
+    meal: formData.get("meal"),
+    companions,
+    total: attend === "O" ? 1 + companionToNumber(companions) : 0
   };
+
+  if (!payload.name) {
+    showToast("성함을 입력해주세요");
+    return;
+  }
 
   if (!DATA.rsvp?.endpoint) {
     showToast("RSVP 연결 정보가 없습니다");
@@ -181,14 +195,15 @@ async function submitRSVP(event) {
     await fetch(DATA.rsvp.endpoint, {
       method: "POST",
       mode: "no-cors",
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8"
-      },
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(payload)
     });
-
-    showToast("참석 여부가 제출되었습니다");
-    event.target.reset();
+    localStorage.setItem("weddingRsvpSubmitted", "true");
+    showToast("참석 여부가 전달되었습니다");
+    form.reset();
+    closeRsvpModal();
+    setTimeout(() => alert("참석 여부가 정상적으로 전달되었습니다.
+응답해 주셔서 감사합니다."), 250);
   } catch (error) {
     console.error(error);
     showToast("제출에 실패했습니다");
@@ -204,7 +219,6 @@ function initRevealAnimation() {
     targets.forEach((target) => target.classList.add("show"));
     return;
   }
-
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -213,20 +227,17 @@ function initRevealAnimation() {
       }
     });
   }, { threshold: 0.14, rootMargin: "0px 0px -40px 0px" });
-
   targets.forEach((target) => observer.observe(target));
 }
 
 function initScrollProgress() {
   const progress = document.getElementById("scrollProgress");
   if (!progress) return;
-
   const update = () => {
     const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
     const percentage = documentHeight > 0 ? (window.scrollY / documentHeight) * 100 : 0;
     progress.style.width = `${Math.min(100, Math.max(0, percentage))}%`;
   };
-
   window.addEventListener("scroll", update, { passive: true });
   update();
 }
@@ -235,7 +246,6 @@ function setMusicUi(playing) {
   const button = document.getElementById("musicButton");
   const label = document.getElementById("musicLabel");
   if (!button || !label) return;
-
   button.classList.toggle("is-playing", playing);
   label.textContent = playing ? "ON" : "OFF";
   button.setAttribute("aria-label", playing ? "배경음악 끄기" : "배경음악 켜기");
@@ -247,7 +257,6 @@ function fadeInAudio(audio, targetVolume, duration) {
   const steps = 20;
   const interval = duration / steps;
   let currentStep = 0;
-
   fadeTimer = setInterval(() => {
     currentStep += 1;
     audio.volume = Math.min(targetVolume, (targetVolume / steps) * currentStep);
@@ -260,13 +269,11 @@ async function playMusic() {
     showToast("배경음악 준비 중입니다");
     return;
   }
-
   if (!bgmAudio) {
     bgmAudio = document.getElementById("bgm");
     bgmAudio.src = DATA.music.file;
     bgmAudio.loop = true;
   }
-
   try {
     await bgmAudio.play();
     isMusicPlaying = true;
@@ -292,56 +299,8 @@ function stopMusic() {
 function initMusic() {
   const button = document.getElementById("musicButton");
   if (!button) return;
-
   setMusicUi(false);
   button.addEventListener("click", () => isMusicPlaying ? stopMusic() : playMusic());
-}
-
-function initLightbox() {
-  const lightbox = document.getElementById("lightbox");
-  const lightboxImage = document.getElementById("lightboxImage");
-  const closeButton = document.getElementById("lightboxClose");
-
-  if (!lightbox || !lightboxImage || !closeButton) return;
-
-  const openLightbox = (src, alt) => {
-    lightboxImage.src = src;
-    lightboxImage.alt = alt || "확대 이미지";
-    lightbox.classList.add("show");
-    lightbox.setAttribute("aria-hidden", "false");
-    document.body.classList.add("is-lightbox-open");
-  };
-
-  const closeLightbox = () => {
-    lightbox.classList.remove("show");
-    lightbox.setAttribute("aria-hidden", "true");
-    document.body.classList.remove("is-lightbox-open");
-    setTimeout(() => {
-      lightboxImage.src = "";
-    }, 180);
-  };
-
-  document.addEventListener("click", (event) => {
-    const galleryButton = event.target.closest(".gallery-item");
-    if (galleryButton) {
-      openLightbox(galleryButton.dataset.src, galleryButton.dataset.alt);
-      return;
-    }
-
-    const mapButton = event.target.closest(".map-image-button");
-    if (mapButton) {
-      const img = mapButton.querySelector("img");
-      openLightbox(img.src, img.alt);
-    }
-  });
-
-  closeButton.addEventListener("click", closeLightbox);
-  lightbox.addEventListener("click", (event) => {
-    if (event.target === lightbox) closeLightbox();
-  });
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && lightbox.classList.contains("show")) closeLightbox();
-  });
 }
 
 function prepareLazyImages() {
@@ -351,6 +310,37 @@ function prepareLazyImages() {
   });
 }
 
+function openRsvpModal(showForm = false) {
+  const modal = document.getElementById("rsvpModal");
+  const intro = document.getElementById("rsvpIntro");
+  const form = document.getElementById("rsvpModalForm");
+  if (!modal || !intro || !form) return;
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden", "false");
+  intro.hidden = showForm;
+  form.hidden = !showForm;
+}
+
+function closeRsvpModal() {
+  const modal = document.getElementById("rsvpModal");
+  if (!modal) return;
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden", "true");
+  localStorage.setItem("weddingRsvpPopupClosed", "true");
+}
+
+function initRsvpModal() {
+  document.querySelectorAll("[data-rsvp-close]").forEach((button) => {
+    button.addEventListener("click", closeRsvpModal);
+  });
+  document.getElementById("openRsvpFormButton")?.addEventListener("click", () => openRsvpModal(true));
+  const alreadyClosed = localStorage.getItem("weddingRsvpPopupClosed") === "true";
+  const alreadySubmitted = localStorage.getItem("weddingRsvpSubmitted") === "true";
+  if (!alreadyClosed && !alreadySubmitted) {
+    setTimeout(() => openRsvpModal(false), 600);
+  }
+}
+
 document.getElementById("copyAddressButton")?.addEventListener("click", () => {
   copyText(DATA.venue.address);
 });
@@ -358,12 +348,12 @@ document.getElementById("copyAddressButton")?.addEventListener("click", () => {
 applyTextData();
 renderInvitation();
 renderParkingNotice();
-renderGallery();
 renderMapButtons();
 renderAccounts();
+renderRSVPForms();
 updateDday();
 initRevealAnimation();
 initScrollProgress();
 initMusic();
-initLightbox();
+initRsvpModal();
 prepareLazyImages();

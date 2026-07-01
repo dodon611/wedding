@@ -12,7 +12,7 @@
   <meta property="og:url" content="https://dodon611.github.io/wedding/" />
   <meta property="og:type" content="website" />
 
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=1.1.0" />
 </head>
 
 <body>
@@ -24,6 +24,29 @@
   </button>
 
   <audio id="bgm" preload="none" loop></audio>
+
+  <div class="rsvp-modal" id="rsvpModal" aria-hidden="true">
+    <div class="rsvp-modal-backdrop" data-rsvp-close></div>
+    <div class="rsvp-modal-card" role="dialog" aria-modal="true" aria-labelledby="rsvpModalTitle">
+      <button class="rsvp-modal-close" type="button" aria-label="닫기" data-rsvp-close>×</button>
+
+      <div class="rsvp-modal-intro" id="rsvpIntro">
+        <p class="section-title">RSVP</p>
+        <h2 id="rsvpModalTitle">참석 여부를 알려주세요</h2>
+        <p class="guide-text">원활한 예식 준비를 위해 참석 여부를 미리 전달해 주시면 큰 도움이 됩니다.</p>
+        <button class="button primary" type="button" id="openRsvpFormButton">참석 여부 전달하기</button>
+      </div>
+
+      <div class="rsvp-modal-form" id="rsvpModalForm" hidden>
+        <p class="section-title">RSVP</p>
+        <h2>참석 여부 전달</h2>
+        <form class="rsvp-form" onsubmit="submitRSVP(event)">
+          <div data-rsvp-fields></div>
+          <button class="submit" type="submit">참석 여부 제출하기</button>
+        </form>
+      </div>
+    </div>
+  </div>
 
   <main class="page">
     <section class="cover">
@@ -47,7 +70,7 @@
         <div class="cover-divider"></div>
 
         <p class="cover-date" data-text="display.coverDate">2027. 10. 23 SAT</p>
-        <p class="cover-venue" data-text="venue.shortName">광명무역센터컨벤션</p>
+        <p class="cover-venue" data-text="venue.name">광명무역센터컨벤션</p>
       </div>
 
       <div class="scroll">
@@ -64,23 +87,14 @@
 
 
 
-    <section class="family-section reveal">
+    <section class="family reveal">
       <p class="section-title">Family</p>
-      <h2 data-text="family.title"></h2>
       <div class="family-card">
-        <div class="family-side">
-          <p class="family-label" data-text="family.groomSide">신랑측</p>
-          <p class="family-parents"><span data-text="groom.parents">이태준 · 박지연</span> <span data-text="groom.relation">의 아들</span></p>
-          <p class="family-name" data-text="groom.fullName">이돈명</p>
-        </div>
-
-        <div class="family-divider"><span>✦</span></div>
-
-        <div class="family-side">
-          <p class="family-label" data-text="family.brideSide">신부측</p>
-          <p class="family-parents"><span data-text="bride.parents">김홍곤 · 이명희</span> <span data-text="bride.relation">의 딸</span></p>
-          <p class="family-name" data-text="bride.fullName">김도희</p>
-        </div>
+        <p class="family-line"><span data-text="groom.father">이태준</span> · <span data-text="groom.mother">박지연</span> 의 아들</p>
+        <p class="family-name" data-text="groom.ko">돈명</p>
+        <div class="family-mark">✦</div>
+        <p class="family-line"><span data-text="bride.father">김홍곤</span> · <span data-text="bride.mother">이명희</span> 의 딸</p>
+        <p class="family-name" data-text="bride.ko">도희</p>
       </div>
     </section>
 
@@ -100,29 +114,41 @@
         <div class="info-row"><span>시간</span><strong data-text="display.time">오후 12시 10분</strong></div>
         <div class="info-row"><span>장소</span><strong data-text="venue.name">광명무역센터컨벤션</strong></div>
         <div class="info-row"><span>주소</span><strong data-text="venue.address">경기 광명시 일직로 72</strong></div>
-      </div>
+</div>
     </section>
 
     <section class="reveal">
       <p class="section-title">Gallery</p>
       <h2>우리의 순간</h2>
-      <p class="guide-text">사진을 클릭하시면 확대해서 보실 수 있습니다.</p>
+      <p class="guide-text">사진은 나중에 추가 예정입니다.</p>
 
-      <div class="gallery-grid" id="galleryGrid"></div>
+      <div class="gallery-grid" id="galleryGrid">
+        <button class="photo-placeholder">PHOTO</button>
+        <button class="photo-placeholder">PHOTO</button>
+        <button class="photo-placeholder">PHOTO</button>
+        <button class="photo-placeholder">PHOTO</button>
+        <button class="photo-placeholder">PHOTO</button>
+        <button class="photo-placeholder">PHOTO</button>
+        <button class="photo-placeholder">PHOTO</button>
+        <button class="photo-placeholder">PHOTO</button>
+        <button class="photo-placeholder">PHOTO</button>
+      </div>
     </section>
 
     <section class="reveal">
       <p class="section-title">Location</p>
       <h2>오시는 길</h2>
 
-      <button class="map-image-button" type="button" id="mapImageButton" aria-label="약도 확대하기">
-        <img id="locationMapImage" src="images/location-map.png" alt="광명무역센터컨벤션 약도" loading="lazy" decoding="async" />
-      </button>
+      <div class="map-preview" aria-label="지도 영역">
+        <div class="map-pin">⌖</div>
+        <div class="map-word">MAP</div>
+        <div class="map-line"></div>
+      </div>
 
       <div class="location-summary">
         <p class="location-name" data-text="venue.name">광명무역센터컨벤션</p>
         <p class="location-address" data-text="venue.address">경기 광명시 일직로 72</p>
-        <p class="location-floor"><span data-text="venue.floor">3층</span> · <span data-text="venue.hall">그랜드볼룸홀</span></p>
+        <p class="location-floor">예식장 <span data-text="venue.floor">3층</span></p>
         <button class="button subtle" id="copyAddressButton">주소 복사하기</button>
       </div>
 
@@ -135,7 +161,7 @@
 
       <div class="notice compact">
         <strong>예식장 안내</strong>
-        <p>도착 후 광명무역센터 <span data-text="venue.floor">3층</span> <span data-text="venue.name">광명무역센터컨벤션 그랜드볼룸홀</span>로 이동해 주세요.</p>
+        <p>도착 후 <span data-text="venue.floor">3층</span> 광명무역센터컨벤션으로 이동해 주세요.</p>
       </div>
     </section>
 
@@ -145,32 +171,14 @@
       <div id="accountList"></div>
     </section>
 
-    <section class="reveal">
+    <section class="reveal" id="rsvpSection">
       <p class="section-title">RSVP</p>
       <h2>참석 여부 전달</h2>
       <p class="guide-text">참석 여부를 알려주시면 준비에 큰 도움이 됩니다.</p>
 
-      <form id="rsvpForm" onsubmit="submitRSVP(event)">
-        <label for="attend">참석 여부</label>
-        <select id="attend" required>
-          <option value="">선택해주세요</option>
-          <option value="참석">참석</option>
-          <option value="불참">불참</option>
-          <option value="미정">미정</option>
-        </select>
-
-        <label for="name">이름</label>
-        <input id="name" type="text" placeholder="성함을 입력해주세요" required />
-
-        <label for="count">동행 인원</label>
-        <select id="count" required>
-          <option value="1">1명</option>
-          <option value="2">2명</option>
-          <option value="3">3명</option>
-          <option value="4">4명 이상</option>
-        </select>
-
-        <button class="submit" id="rsvpSubmitButton" type="submit">참석 여부 제출하기</button>
+      <form class="rsvp-form" onsubmit="submitRSVP(event)">
+        <div data-rsvp-fields></div>
+        <button class="submit" type="submit">참석 여부 제출하기</button>
       </form>
     </section>
 
@@ -186,14 +194,7 @@
     <span id="toastMessage">복사되었습니다</span>
   </div>
 
-
-
-  <div id="lightbox" class="lightbox" aria-hidden="true">
-    <button class="lightbox-close" type="button" id="lightboxClose" aria-label="닫기">×</button>
-    <img id="lightboxImage" src="" alt="확대 이미지" />
-  </div>
-
-  <script src="data.js"></script>
-  <script src="script.js"></script>
+  <script src="data.js?v=1.1.0"></script>
+  <script src="script.js?v=1.1.0"></script>
 </body>
 </html>
