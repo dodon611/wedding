@@ -12,9 +12,7 @@ function getValueByPath(object, path) {
 function applyTextData() {
   document.querySelectorAll("[data-text]").forEach((element) => {
     const value = getValueByPath(DATA, element.dataset.text);
-    if (value !== undefined && value !== null) {
-      element.textContent = value;
-    }
+    if (value !== undefined && value !== null) element.textContent = value;
   });
 }
 
@@ -54,7 +52,6 @@ function renderAccounts() {
   if (!target) return;
 
   const accounts = [DATA.groom, DATA.bride];
-
   target.innerHTML = accounts.map((person) => {
     const accountText = `${person.bank} ${person.accountNumber}`;
     return `
@@ -83,7 +80,6 @@ function animateNumber(element, target) {
     const progress = Math.min((now - startTime) / duration, 1);
     const eased = 1 - Math.pow(1 - progress, 3);
     element.textContent = Math.round(absoluteTarget * eased);
-
     if (progress < 1) requestAnimationFrame(update);
   }
 
@@ -96,7 +92,6 @@ function updateDday() {
   if (!numberElement || !wrapper) return;
 
   const diff = getDdayDifference();
-
   if (diff > 0) {
     wrapper.firstChild.textContent = "D-";
     animateNumber(numberElement, diff);
@@ -108,23 +103,10 @@ function updateDday() {
   }
 }
 
-function getGoogleCalendarUrl() {
-  const start = "20271023T031000Z";
-  const end = "20271023T051000Z";
-  const text = encodeURIComponent(`${DATA.groom.en} & ${DATA.bride.en} Wedding`);
-  const location = encodeURIComponent(`${DATA.venue.address}, ${DATA.venue.name} ${DATA.venue.floor}`);
-  const details = encodeURIComponent(`${DATA.groom.en} & ${DATA.bride.en} 결혼식`);
-  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${start}/${end}&details=${details}&location=${location}`;
-}
-
-function initCalendarButtons() {
-  const googleButton = document.getElementById("googleCalendarButton");
-  if (googleButton) googleButton.href = getGoogleCalendarUrl();
-}
-
 function showToast(message) {
   const toast = document.getElementById("toast");
   const toastMessage = document.getElementById("toastMessage");
+  if (!toast || !toastMessage) return;
   toastMessage.textContent = message;
   toast.classList.add("show");
   setTimeout(() => toast.classList.remove("show"), 1800);
@@ -136,6 +118,10 @@ function copyText(text) {
     .catch(() => showToast("복사에 실패했습니다"));
 }
 
+function companionToNumber(companion) {
+  return String(companion).includes("3") ? 3 : parseInt(companion, 10) || 0;
+}
+
 async function submitRSVP(event) {
   event.preventDefault();
 
@@ -143,25 +129,17 @@ async function submitRSVP(event) {
   const submitButton = form.querySelector('button[type="submit"]');
   const formData = new FormData(form);
 
-  const side = formData.get("side") || document.getElementById("side")?.value || "";
-  const attend = formData.get("attend") || document.getElementById("attend")?.value || "";
-  const meal = formData.get("meal") || document.getElementById("meal")?.value || "";
-  const name = (formData.get("name") || document.getElementById("name")?.value || "").trim();
-  const companion = formData.get("companion") || document.getElementById("count")?.value || "0";
+  const side = formData.get("side") || "";
+  const attend = formData.get("attend") || "";
+  const name = (formData.get("name") || "").trim();
+  const companion = formData.get("companion") || "";
 
-  const companionNumber = String(companion).includes("3") ? 3 : parseInt(companion, 10) || 0;
+  const companionNumber = companionToNumber(companion);
   const total = attend === "O" ? 1 + companionNumber : 0;
 
-  const payload = {
-    side,
-    name,
-    attend,
-    meal,
-    companion,
-    total
-  };
+  const payload = { side, name, attend, companion, total };
 
-  if (!side || !attend || !meal || !name || companion === "") {
+  if (!side || !attend || !name || companion === "") {
     showToast("입력 항목을 확인해주세요");
     return;
   }
@@ -180,9 +158,7 @@ async function submitRSVP(event) {
     await fetch(DATA.rsvp.endpoint, {
       method: "POST",
       mode: "no-cors",
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8"
-      },
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(payload)
     });
 
@@ -190,7 +166,7 @@ async function submitRSVP(event) {
     form.reset();
 
     if (form.id === "popupRsvpForm") {
-      setTimeout(() => closeRsvpModal(), 700);
+      setTimeout(closeRsvpModal, 700);
     }
   } catch (error) {
     console.error(error);
@@ -204,22 +180,7 @@ async function submitRSVP(event) {
 }
 
 function initRevealAnimation() {
-  const targets = document.querySelectorAll(".reveal");
-  if (!("IntersectionObserver" in window)) {
-    targets.forEach((target) => target.classList.add("show"));
-    return;
-  }
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("show");
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.14, rootMargin: "0px 0px -40px 0px" });
-
-  targets.forEach((target) => observer.observe(target));
+  document.querySelectorAll(".reveal").forEach((target) => target.classList.add("show"));
 }
 
 function initScrollProgress() {
@@ -275,7 +236,6 @@ async function playMusic() {
   try {
     await bgmAudio.play();
     isMusicPlaying = true;
-    localStorage.setItem("weddingMusic", "on");
     setMusicUi(true);
     fadeInAudio(bgmAudio, DATA.music.volume ?? 0.75, DATA.music.fadeInMs ?? 1000);
   } catch (error) {
@@ -290,14 +250,12 @@ function stopMusic() {
   bgmAudio.pause();
   bgmAudio.currentTime = 0;
   isMusicPlaying = false;
-  localStorage.setItem("weddingMusic", "off");
   setMusicUi(false);
 }
 
 function initMusic() {
   const button = document.getElementById("musicButton");
   if (!button) return;
-
   setMusicUi(false);
   button.addEventListener("click", () => isMusicPlaying ? stopMusic() : playMusic());
 }
@@ -309,32 +267,42 @@ function prepareLazyImages() {
   });
 }
 
-
 function openRsvpModal() {
   const modal = document.getElementById("rsvpModal");
   if (!modal) return;
-  modal.classList.add("show");
+  modal.classList.add("is-open");
   modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+  showRsvpIntroStep();
 }
 
 function closeRsvpModal() {
   const modal = document.getElementById("rsvpModal");
   if (!modal) return;
-  modal.classList.remove("show");
+  modal.classList.remove("is-open");
   modal.setAttribute("aria-hidden", "true");
-  localStorage.setItem("weddingRsvpPopupClosed", "true");
+  document.body.classList.remove("modal-open");
+}
+
+function showRsvpIntroStep() {
+  document.getElementById("rsvpIntroStep")?.classList.add("is-active");
+  document.getElementById("rsvpFormStep")?.classList.remove("is-active");
+}
+
+function showRsvpFormStep() {
+  document.getElementById("rsvpIntroStep")?.classList.remove("is-active");
+  document.getElementById("rsvpFormStep")?.classList.add("is-active");
 }
 
 function initRsvpModal() {
-  document.getElementById("rsvpModalClose")?.addEventListener("click", closeRsvpModal);
-  document.getElementById("openRsvpFormButton")?.addEventListener("click", () => {
-    closeRsvpModal();
-    document.getElementById("rsvpForm")?.scrollIntoView({ behavior: "smooth", block: "center" });
-  });
+  const modal = document.getElementById("rsvpModal");
+  if (!modal) return;
 
-  if (!localStorage.getItem("weddingRsvpPopupClosed") && !localStorage.getItem("weddingRsvpSubmitted")) {
-    setTimeout(openRsvpModal, 650);
-  }
+  document.getElementById("rsvpModalClose")?.addEventListener("click", closeRsvpModal);
+  document.getElementById("openPopupFormButton")?.addEventListener("click", showRsvpFormStep);
+  modal.querySelector(".rsvp-modal-backdrop")?.addEventListener("click", closeRsvpModal);
+
+  setTimeout(openRsvpModal, 650);
 }
 
 function openLightbox(src) {
@@ -381,44 +349,3 @@ initMusic();
 prepareLazyImages();
 initRsvpModal();
 initLightbox();
-
-
-function openRsvpModal() {
-  const modal = document.getElementById("rsvpModal");
-  if (!modal) return;
-  modal.classList.add("is-open");
-  modal.setAttribute("aria-hidden", "false");
-  document.body.classList.add("modal-open");
-  showRsvpIntroStep();
-}
-
-function closeRsvpModal() {
-  const modal = document.getElementById("rsvpModal");
-  if (!modal) return;
-  modal.classList.remove("is-open");
-  modal.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("modal-open");
-}
-
-function showRsvpIntroStep() {
-  document.getElementById("rsvpIntroStep")?.classList.add("is-active");
-  document.getElementById("rsvpFormStep")?.classList.remove("is-active");
-}
-
-function showRsvpFormStep() {
-  document.getElementById("rsvpIntroStep")?.classList.remove("is-active");
-  document.getElementById("rsvpFormStep")?.classList.add("is-active");
-}
-
-function initRsvpModal() {
-  const modal = document.getElementById("rsvpModal");
-  if (!modal) return;
-
-  document.getElementById("rsvpModalClose")?.addEventListener("click", closeRsvpModal);
-  document.getElementById("openPopupFormButton")?.addEventListener("click", showRsvpFormStep);
-
-  modal.querySelector(".rsvp-modal-backdrop")?.addEventListener("click", closeRsvpModal);
-
-  setTimeout(openRsvpModal, 650);
-}
-

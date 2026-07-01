@@ -1050,3 +1050,39 @@ body.modal-open {
 .map-word {
   display: none !important;
 }
+
+
+/* v1.2.0: RSVP popup and form cleanup */
+body.modal-open {
+  overflow: hidden;
+}
+
+.reveal {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.rsvp-modal-card {
+  display: none !important;
+}
+
+.rsvp-modal.is-open {
+  display: flex !important;
+}
+
+.rsvp-modal-step {
+  display: none;
+}
+
+.rsvp-modal-step.is-active {
+  display: block;
+}
+
+.submit:disabled {
+  opacity: 0.62;
+  cursor: not-allowed;
+}
+
+.map-word {
+  display: none !important;
+}

@@ -1,0 +1,79 @@
+function doPost(e) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+
+  const raw = e && e.postData && e.postData.contents
+    ? e.postData.contents
+    : "";
+
+  let data = {};
+  try {
+    data = JSON.parse(raw);
+  } catch (err) {
+    data = {};
+  }
+
+  const now = new Date();
+  const side = data.side || "";
+  const name = data.name || "";
+  const attend = data.attend || "";
+  const companion = data.companion || "";
+  const total = data.total || 0;
+
+  const rows = sheet.getDataRange().getValues();
+  let targetRow = -1;
+
+  for (let i = 1; i < rows.length; i++) {
+    const rowSide = rows[i][1];
+    const rowName = rows[i][2];
+
+    if (rowSide === side && rowName === name) {
+      targetRow = i + 1;
+      break;
+    }
+  }
+
+  const values = [now, side, name, attend, companion, total];
+
+  if (targetRow > 0) {
+    sheet.getRange(targetRow, 1, 1, values.length).setValues([values]);
+  } else {
+    sheet.appendRow(values);
+  }
+
+  return ContentService
+    .createTextOutput("ok")
+    .setMimeType(ContentService.MimeType.TEXT);
+}
+
+function doGet(e) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+  const rows = sheet.getDataRange().getValues();
+
+  const data = rows.slice(1)
+    .filter(row => row[2])
+    .map(row => ({
+      time: row[0],
+      side: row[1],
+      name: row[2],
+      attend: row[3],
+      companion: row[4],
+      total: row[5]
+    }));
+
+  const output = JSON.stringify({
+    result: "success",
+    data: data
+  });
+
+  const callback = e.parameter.callback;
+
+  if (callback) {
+    return ContentService
+      .createTextOutput(callback + "(" + output + ");")
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+
+  return ContentService
+    .createTextOutput(output)
+    .setMimeType(ContentService.MimeType.JSON);
+}
